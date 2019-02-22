@@ -19,6 +19,8 @@ class CongressmanListActivity(private var apiService: ApiService? = null) : AppC
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_congressman_list)
 
+        apiService = ApiService()
+
         val congressmanIntent = intent
         val test: String = congressmanIntent.getStringExtra("apiKey")
         val test1 = apiService!!.test()
