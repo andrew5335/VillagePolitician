@@ -1,8 +1,8 @@
 package politics.andrew.com.villagepolitician.activity
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.widget.Toast
 import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.service.ApiService
@@ -14,27 +14,37 @@ import politics.andrew.com.villagepolitician.service.ApiService
  * @Version : 1.0.0
  * @Description : 국회의원 정보 리스트를 보여준다
 **/
-class CongressmanListActivity(private var apiService: ApiService? = null) : AppCompatActivity() {
+class CongressmanListActivity : AppCompatActivity() {
+
+    var test1: String? = null
+    private var apiService = ApiService()
+    private var handler: Handler? = null
+    private var runnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_congressman_list)
 
-        apiService = ApiService()
-
         val congressmanIntent = intent
         val apiKey: String = congressmanIntent.getStringExtra("apiKey")
-        Thread({
-            val test1: String = getCongressman(apiKey)
-            Log.e("Congressman Info", "CongressmanInfo : " + test1);
-            Toast.makeText(applicationContext, test1, Toast.LENGTH_LONG).show()
-        }).start()
 
+        handler = Handler()
+        Thread({
+            test1 = getCongressman(apiKey);
+
+            handler?.post{
+                toastMessage(test1!!)
+            }
+        }).start()
     }
 
     fun getCongressman(apiKey: String): String {
-        val apiService: ApiService = ApiService()
-        val test2: String = apiService!!.test(apiKey)
+        val test2: String
+        test2 = apiService!!.test(apiKey)
         return test2
+    }
+
+    fun toastMessage(str: String) {
+        Toast.makeText(applicationContext, str, Toast.LENGTH_LONG).show()
     }
 }
