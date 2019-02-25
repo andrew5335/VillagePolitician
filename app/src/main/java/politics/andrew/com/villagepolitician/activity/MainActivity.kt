@@ -21,7 +21,7 @@ class MainActivity(private var apiService: ApiService? = null) : AppCompatActivi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        apiService = ApiService()
+        //apiService = ApiService()
         //val result: String = getResult("Hello Andrew !!!")
         //printStr(result)
         //test1.setOnClickListener { onTest1Clicked() }

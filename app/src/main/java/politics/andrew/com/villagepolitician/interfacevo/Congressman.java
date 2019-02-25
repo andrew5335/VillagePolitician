@@ -68,7 +68,7 @@ public class Congressman implements Serializable {
     }
 
     public interface CongressmanInterface {
-        @GET("/politician/congressman/v1/1.0.0/contressmanList.php")
+        @GET("/politician/congressman/v1/1.0.0/congressmanList.php")
         Call<Congressman> get_congressman(
                 @Query("page") int page
                 , @Query("per_page") int per_page

@@ -2,6 +2,7 @@ package politics.andrew.com.villagepolitician.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toast
 import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.service.ApiService
@@ -22,8 +23,15 @@ class CongressmanListActivity(private var apiService: ApiService? = null) : AppC
         apiService = ApiService()
 
         val congressmanIntent = intent
-        val test: String = congressmanIntent.getStringExtra("apiKey")
-        val test1 = apiService!!.test()
+        val apiKey: String = congressmanIntent.getStringExtra("apiKey")
+        val test1: String = getCongressman(apiKey)
+        Log.e("Congressman Info", "CongressmanInfo : " + test1);
         Toast.makeText(applicationContext, test1, Toast.LENGTH_LONG).show()
+    }
+
+    fun getCongressman(apiKey: String): String {
+        val apiService: ApiService = ApiService()
+        val test2: String = apiService!!.test(apiKey)
+        return test2
     }
 }

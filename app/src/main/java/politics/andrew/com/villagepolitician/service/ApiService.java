@@ -2,12 +2,12 @@ package politics.andrew.com.villagepolitician.service;
 
 import android.util.Log;
 
+import java.util.List;
+
 import politics.andrew.com.villagepolitician.interfacevo.Congressman;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import java.util.List;
 
 /**
  * @File : ApiService
@@ -18,18 +18,18 @@ import java.util.List;
 **/
 public class ApiService {
 
-    private String eye2webHost = "http://www.eye2weeb.co.kr";
+    private String eye2webHost = "http://www.eye2web.co.kr";
     private Congressman congressman;
     private List<Congressman> congressmanList;
 
     private Retrofit client = new Retrofit.Builder().baseUrl(eye2webHost).addConverterFactory(GsonConverterFactory.create()).build();
 
-    public String test() {
+    public String test(String apiKey) {
         congressman = new Congressman();
 
-        congressman = getCongressman(1, 1, "ehdus77!@");
-
-        return congressman.getAides();
+        congressman = getCongressman(1, 1, apiKey);
+        Log.e("Error", "Congressman Info : " + congressman.getName_kr());
+        return congressman.getName_kr();
     }
 
     public Congressman getCongressman(int page,  int per_page, String apiKey) {
