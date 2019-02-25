@@ -24,9 +24,12 @@ class CongressmanListActivity(private var apiService: ApiService? = null) : AppC
 
         val congressmanIntent = intent
         val apiKey: String = congressmanIntent.getStringExtra("apiKey")
-        val test1: String = getCongressman(apiKey)
-        Log.e("Congressman Info", "CongressmanInfo : " + test1);
-        Toast.makeText(applicationContext, test1, Toast.LENGTH_LONG).show()
+        Thread({
+            val test1: String = getCongressman(apiKey)
+            Log.e("Congressman Info", "CongressmanInfo : " + test1);
+            Toast.makeText(applicationContext, test1, Toast.LENGTH_LONG).show()
+        }).start()
+
     }
 
     fun getCongressman(apiKey: String): String {

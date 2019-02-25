@@ -34,10 +34,11 @@ public class ApiService {
 
     public Congressman getCongressman(int page,  int per_page, String apiKey) {
         try {
-            Congressman.CongressmanInterface service = client.create(Congressman.CongressmanInterface.class);
-            Call<Congressman> call = service.get_congressman(page, per_page, apiKey);
+            Congressman.CongressmanListInterface service = client.create(Congressman.CongressmanListInterface.class);
+            Call<List<Congressman>> call = ((Congressman.CongressmanListInterface) service).get_congressman_list(page, per_page, apiKey);
 
-            congressman = call.execute().body();
+            List<Congressman> tmpCongressMan = call.execute().body();
+            congressman = tmpCongressMan.get(0);
         } catch(Exception e) {
             Log.e("Error", "Eye2Web Congressman Api Call Error" + e.toString());
         }
