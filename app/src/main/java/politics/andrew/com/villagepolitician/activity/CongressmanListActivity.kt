@@ -14,10 +14,9 @@ import politics.andrew.com.villagepolitician.service.ApiService
  * @Version : 1.0.0
  * @Description : 국회의원 정보 리스트를 보여준다
 **/
-class CongressmanListActivity : AppCompatActivity() {
+class CongressmanListActivity(private var apiService: ApiService? =  null) : AppCompatActivity() {
 
     var test1: String? = null
-    private var apiService = ApiService()
     private var handler: Handler? = null
     private var runnable: Runnable? = null
 
@@ -39,6 +38,7 @@ class CongressmanListActivity : AppCompatActivity() {
     }
 
     fun getCongressman(apiKey: String): String {
+        apiService = ApiService()
         val test2: String
         test2 = apiService!!.test(apiKey)
         return test2
