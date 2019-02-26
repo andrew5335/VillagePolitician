@@ -3,6 +3,7 @@ package politics.andrew.com.villagepolitician.interfacevo;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -60,7 +61,7 @@ public class Congressman implements Serializable {
 
     public interface CongressmanListInterface {
         @GET("/politician/congressman/v1/1.0.0/congressmanList.php")
-        Call<List<Congressman>> get_congressman_list(
+        Call<ArrayList<Congressman>> get_congressman_list(
           @Query("page") int page
           , @Query("per_page") int per_page
           , @Query("apiKey") String apiKey

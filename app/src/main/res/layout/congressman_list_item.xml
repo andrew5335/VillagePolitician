@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp" >
+
+    <ImageView
+        android:id="@+id/congressman_photo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/congressman_name_kr"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/congressman_photo"
+        app:layout_constraintTop_toTopOf="@id/congressman_photo"
+        tools:text="한글이름"
+        tools:textColor="#000" />
+
+
+    <TextView
+        android:id="@+id/congressman_party"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/congressman_name_kr"
+        app:layout_constraintTop_toTopOf="@id/congressman_name_kr"
+        tools:text="(소속정당)"
+        tools:textColor="#000" />
+
+    <TextView
+        android:id="@+id/congressman_name_ch"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:textSize="14dp"
+        app:layout_constraintTop_toBottomOf="@id/congressman_name_kr"
+        app:layout_constraintLeft_toRightOf="@id/congressman_photo"
+        tools:text="한자이름"
+        tools:textColor="#000" />
+
+    <TextView
+        android:id="@+id/congressman_name_en"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:textSize="14dp"
+        app:layout_constraintTop_toBottomOf="@id/congressman_name_ch"
+        app:layout_constraintLeft_toRightOf="@id/congressman_photo"
+        tools:text="영문이름"
+        tools:textColor="#000" />
+
+    <TextView
+        android:id="@+id/congressman_district"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:textSize="14dp"
+        app:layout_constraintTop_toBottomOf="@id/congressman_name_en"
+        app:layout_constraintLeft_toRightOf="@id/congressman_photo"
+        tools:text="지역구"
+        tools:textColor="#000 "/>
+
+</android.support.constraint.ConstraintLayout>

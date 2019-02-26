@@ -2,6 +2,7 @@ package politics.andrew.com.villagepolitician.service;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import politics.andrew.com.villagepolitician.interfacevo.Congressman;
@@ -20,7 +21,7 @@ public class ApiService {
 
     private String eye2webHost = "http://www.eye2web.co.kr";
     private Congressman congressman;
-    private List<Congressman> congressmanList;
+    private ArrayList<Congressman> congressmanList;
 
     private Retrofit client = new Retrofit.Builder().baseUrl(eye2webHost).addConverterFactory(GsonConverterFactory.create()).build();
 
@@ -32,10 +33,10 @@ public class ApiService {
         return congressman.getName_kr();
     }
 
-    public Congressman getCongressman(int page,  int per_page, String apiKey) {
+    public Congressman getCongressman(int page, int per_page, String apiKey) {
         try {
             Congressman.CongressmanListInterface service = client.create(Congressman.CongressmanListInterface.class);
-            Call<List<Congressman>> call = ((Congressman.CongressmanListInterface) service).get_congressman_list(page, per_page, apiKey);
+            Call<ArrayList<Congressman>> call = ((Congressman.CongressmanListInterface) service).get_congressman_list(page, per_page, apiKey);
 
             List<Congressman> tmpCongressMan = call.execute().body();
             congressman = tmpCongressMan.get(0);
@@ -46,10 +47,11 @@ public class ApiService {
         return congressman;
     }
 
-    public List<Congressman> getContressmanList(int page, int per_page, String apiKey) {
+
+    public ArrayList<Congressman> getContressmanList(int page, int per_page, String apiKey) {
         try {
             Congressman.CongressmanListInterface service = client.create(Congressman.CongressmanListInterface.class);
-            Call<List<Congressman>> call = service.get_congressman_list(page, per_page, apiKey);
+            Call<ArrayList<Congressman>> call = service.get_congressman_list(page, per_page, apiKey);
 
             congressmanList = call.execute().body();
         } catch(Exception e) {

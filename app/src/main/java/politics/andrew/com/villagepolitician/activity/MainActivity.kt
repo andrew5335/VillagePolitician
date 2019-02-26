@@ -42,8 +42,11 @@ class MainActivity(private var apiService: ApiService? = null) : AppCompatActivi
     **/
 
     /**
-     * 국회의원 리스트 호출
-     */
+    * @File : onCongressmanClicked
+    * @Date : 2019-02-26 오후 3:34
+    * @Author : Andrew Kim
+    * @Description : 국회의원 목록 보기 버튼
+    **/
     fun onCongressmanClicked(v: View) {
         //Toast.makeText(applicationContext, "test1 clicked...", Toast.LENGTH_LONG).show()
         //val text: String = apiService!!.test()
