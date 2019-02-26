@@ -27,7 +27,7 @@ public class ApiService {
     public String test(String apiKey) {
         congressman = new Congressman();
 
-        congressman = getCongressman(1, 1, apiKey);
+        congressman = getCongressman(0, 1, apiKey);
         Log.e("Error", "Congressman Info : " + congressman.getName_kr());
         return congressman.getName_kr();
     }
