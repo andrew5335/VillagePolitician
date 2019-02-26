@@ -27,9 +27,26 @@ public class ApiService {
     public String test(String apiKey) {
         congressman = new Congressman();
 
-        congressman = getCongressman(1, 1, apiKey);
-        Log.e("Error", "Congressman Info : " + congressman.getName_kr());
-        return congressman.getName_kr();
+        congressman = getCongressman(1, 1, "ehdus77!@");
+        //Log.i("Info", "Congressman Info : " + congressman.getName_kr());
+        return congressman.getName_kr().toString();
+    }
+
+    public static void main(String[] args) {
+        Congressman congressman = new Congressman();
+        Retrofit client = new Retrofit.Builder().baseUrl("http://www.eye2web.co.kr").addConverterFactory(GsonConverterFactory.create()).build();
+
+        try {
+            Congressman.CongressmanListInterface service = client.create(Congressman.CongressmanListInterface.class);
+            Call<List<Congressman>> call = ((Congressman.CongressmanListInterface) service).get_congressman_list(1, 1, "ehdus77!@");
+
+            List<Congressman> tmpCongressMan = call.execute().body();
+            congressman = tmpCongressMan.get(0);
+        } catch(Exception e) {
+            Log.e("Error", "Error : " + e.toString());
+        }
+
+        System.out.println("Congressman name : " + congressman.getName_kr().toString());
     }
 
     public Congressman getCongressman(int page,  int per_page, String apiKey) {
