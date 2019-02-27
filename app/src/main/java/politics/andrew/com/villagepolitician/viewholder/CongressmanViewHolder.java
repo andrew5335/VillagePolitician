@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 public class CongressmanViewHolder {
     public ImageView congressmanPhoto;
+    public TextView congressmanParty;
     public TextView congressmanDistrict;
     public TextView congressmanNameKr;
     public TextView congressnamNameCh;

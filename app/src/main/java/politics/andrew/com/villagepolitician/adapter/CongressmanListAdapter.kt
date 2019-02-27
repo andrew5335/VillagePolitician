@@ -9,6 +9,9 @@ import android.view.ViewParent
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.request.RequestOptions
 import org.w3c.dom.Text
 import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.interfacevo.Congressman
@@ -38,6 +41,7 @@ class CongressmanListAdapter (val context: Context, val congressmanList: ArrayLi
             view = LayoutInflater.from(context).inflate(R.layout.congressman_list_item, null)
             viewHolder = CongressmanViewHolder()
             viewHolder.congressmanPhoto = view.findViewById(R.id.congressman_photo)
+            viewHolder.congressmanParty = view.findViewById(R.id.congressman_party)
             viewHolder.congressmanNameKr = view.findViewById(R.id.congressman_name_kr)
             viewHolder.congressmanDistrict = view.findViewById(R.id.congressman_district)
             viewHolder.congressnamNameCh = view.findViewById(R.id.congressman_name_ch)
@@ -55,8 +59,12 @@ class CongressmanListAdapter (val context: Context, val congressmanList: ArrayLi
         //val congressman_name_en = view.findViewById<TextView>(R.id.congressman_name_en)
 
         val congressman = congressmanList[position]
-        val resourceId = context.resources.getIdentifier(congressman.photo, "drawable", context.packageName)
-        viewHolder.congressmanPhoto.setImageResource(resourceId)
+        if(null != congressman.photo) {
+            var requestOption = RequestOptions()
+            requestOption.override(100, 100)
+            Glide.with(context).load(congressman.photo).apply(requestOption).into(viewHolder.congressmanPhoto)
+        }
+        viewHolder.congressmanParty.text = "(" + congressman.party + ")"
         viewHolder.congressmanNameKr.text = congressman.name_kr
         viewHolder.congressmanDistrict.text = congressman.district
         viewHolder.congressnamNameCh.text = congressman.name_cn
