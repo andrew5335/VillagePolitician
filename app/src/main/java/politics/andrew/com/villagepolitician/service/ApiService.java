@@ -23,20 +23,26 @@ public class ApiService {
     private Congressman congressman;
     private ArrayList<Congressman> congressmanList;
 
-    private Retrofit client = new Retrofit.Builder().baseUrl(eye2webHost).addConverterFactory(GsonConverterFactory.create()).build();
+    private Retrofit client = new Retrofit.Builder().baseUrl(eye2webHost).addConverterFactory(GsonConverterFactory.create()).build();    // json type data 연동을 위한 Retrofit client 생성
 
     public String test(String apiKey) {
         congressman = new Congressman();
 
-        congressman = getCongressman(0, 1, apiKey);
+        congressman = getCongressman(0, 1, "name_kr", "asc", "", apiKey);
         Log.e("Error", "Congressman Info : " + congressman.getName_kr());
         return congressman.getName_kr();
     }
 
-    public Congressman getCongressman(int page, int per_page, String apiKey) {
+    /**
+     * @File : getCongressmman
+     * @Date : 2019-02-28 오후 12:20
+     * @Author : Andrew Kim
+     * @Description : 국회의원 정보 가져오기 (1명의 정보 return)
+    **/
+    public Congressman getCongressman(int page, int per_page, String sortQuery,  String sort, String queryWord, String apiKey) {
         try {
             Congressman.CongressmanListInterface service = client.create(Congressman.CongressmanListInterface.class);
-            Call<ArrayList<Congressman>> call = ((Congressman.CongressmanListInterface) service).get_congressman_list(page, per_page, apiKey);
+            Call<ArrayList<Congressman>> call = ((Congressman.CongressmanListInterface) service).get_congressman_list(page, per_page, sortQuery, sort, queryWord, apiKey);
 
             List<Congressman> tmpCongressMan = call.execute().body();
             congressman = tmpCongressMan.get(0);
@@ -47,11 +53,16 @@ public class ApiService {
         return congressman;
     }
 
-
-    public ArrayList<Congressman> getContressmanList(int page, int per_page, String apiKey) {
+    /**
+     * @File : getCongressmanList
+     * @Date : 2019-02-28 오후 12:21
+     * @Author : Andrew Kim
+     * @Description : 국회의원 정보 가져오기 (국회의원 목록 return)
+    **/
+    public ArrayList<Congressman> getContressmanList(int page, int per_page, String sortQuery, String sort, String queryWord, String apiKey) {
         try {
             Congressman.CongressmanListInterface service = client.create(Congressman.CongressmanListInterface.class);
-            Call<ArrayList<Congressman>> call = service.get_congressman_list(page, per_page, apiKey);
+            Call<ArrayList<Congressman>> call = service.get_congressman_list(page, per_page, sortQuery, sort, queryWord, apiKey);
 
             congressmanList = call.execute().body();
         } catch(Exception e) {

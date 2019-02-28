@@ -7,13 +7,13 @@ import android.support.v7.app.AppCompatActivity
 import politics.andrew.com.villagepolitician.R
 
 /**
-* @File : SplashActivity
-* @Date : 2019-02-26 오후 3:34
-* @Author : Andrew Kim
-* @Version : 1.0.0
-* @Description : 초기 로딩 화면
+ * @File : SplashActivity
+ * @Date : 2019-02-26 오후 3:34
+ * @Author : Andrew Kim
+ * @Version : 1.0.0
+ * @Description : 초기 로딩 화면
 **/
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
 
     private var mDelayHandler: Handler? = null
     private val SPLASH_DELAY: Long = 1000

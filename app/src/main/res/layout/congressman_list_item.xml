@@ -27,8 +27,8 @@
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/congressman_photo"
         app:layout_constraintTop_toTopOf="@id/congressman_photo"
-        tools:text="한글이름"
-        tools:textColor="#000" />
+        android:text="한글이름"
+        android:textColor="#000" />
 
 
     <TextView
@@ -41,8 +41,8 @@
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/congressman_name_kr"
         app:layout_constraintTop_toTopOf="@id/congressman_name_kr"
-        tools:text="(소속정당)"
-        tools:textColor="#000" />
+        android:text="(소속정당)"
+        android:textColor="#000" />
 
     <TextView
         android:id="@+id/congressman_name_ch"
@@ -54,8 +54,8 @@
         android:textSize="14dp"
         app:layout_constraintTop_toBottomOf="@id/congressman_name_kr"
         app:layout_constraintLeft_toRightOf="@id/congressman_photo"
-        tools:text="한자이름"
-        tools:textColor="#000" />
+        android:text="한자이름"
+        android:textColor="#000" />
 
     <TextView
         android:id="@+id/congressman_name_en"
@@ -67,8 +67,8 @@
         android:textSize="14dp"
         app:layout_constraintTop_toBottomOf="@id/congressman_name_ch"
         app:layout_constraintLeft_toRightOf="@id/congressman_photo"
-        tools:text="영문이름"
-        tools:textColor="#000" />
+        android:text="영문이름"
+        android:textColor="#000" />
 
     <TextView
         android:id="@+id/congressman_district"
@@ -80,7 +80,7 @@
         android:textSize="14dp"
         app:layout_constraintTop_toBottomOf="@id/congressman_name_en"
         app:layout_constraintLeft_toRightOf="@id/congressman_photo"
-        tools:text="지역구"
-        tools:textColor="#000 "/>
+        android:text="지역구"
+        android:textColor="#000 "/>
 
 </android.support.constraint.ConstraintLayout>

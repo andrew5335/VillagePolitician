@@ -64,6 +64,9 @@ public class Congressman implements Serializable {
         Call<ArrayList<Congressman>> get_congressman_list(
           @Query("page") int page
           , @Query("per_page") int per_page
+          , @Query("sortQuery") String  sortQuery
+          , @Query("sort") String sort
+          , @Query("queryWord") String queryWord
           , @Query("apiKey") String apiKey
         );
     }

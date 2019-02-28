@@ -2,10 +2,12 @@ package politics.andrew.com.villagepolitician.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.StrictMode
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import politics.andrew.com.villagepolitician.R
+import politics.andrew.com.villagepolitician.handler.BackPressCloseHandler
 import politics.andrew.com.villagepolitician.service.ApiService
 
 /**
@@ -15,11 +17,16 @@ import politics.andrew.com.villagepolitician.service.ApiService
  * @Version : 1.0.0
  * @Description : 메인화면 구성 Activity
 **/
-class MainActivity(private var apiService: ApiService? = null) : AppCompatActivity() {
+class MainActivity(private var apiService: ApiService? = null) : BaseActivity() {
+
+    private var backPressCloseHandler: BackPressCloseHandler? = BackPressCloseHandler(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        var policy: StrictMode.ThreadPolicy? = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
 
         //apiService = ApiService()
         //val result: String = getResult("Hello Andrew !!!")
@@ -42,10 +49,10 @@ class MainActivity(private var apiService: ApiService? = null) : AppCompatActivi
     **/
 
     /**
-    * @File : onCongressmanClicked
-    * @Date : 2019-02-26 오후 3:34
-    * @Author : Andrew Kim
-    * @Description : 국회의원 목록 보기 버튼
+     * @File : onCongressmanClicked
+     * @Date : 2019-02-26 오후 3:34
+     * @Author : Andrew Kim
+     * @Description : 국회의원 목록 보기 버튼
     **/
     fun onCongressmanClicked(v: View) {
         //Toast.makeText(applicationContext, "test1 clicked...", Toast.LENGTH_LONG).show()
@@ -54,7 +61,7 @@ class MainActivity(private var apiService: ApiService? = null) : AppCompatActivi
         val congressmanIntent = Intent(applicationContext, CongressmanListActivity::class.java)
         congressmanIntent.putExtra("apiKey", getString(R.string.apiKey))
         startActivity(congressmanIntent)
-        finish()
+        //finish()
     }
 
     fun onTest2Clicked(v: View) {
@@ -63,5 +70,16 @@ class MainActivity(private var apiService: ApiService? = null) : AppCompatActivi
 
     fun onTest3Clicked(v: View) {
         Toast.makeText(applicationContext, "test3 clicked", Toast.LENGTH_LONG).show()
+    }
+
+    /**
+     * @File : onBackPressed
+     * @Date : 2019-02-28 오후 12:15
+     * @Author : Andrew Kim
+     * @Description : 서비스 종료 처리
+     *                  뒤로가기 두번 클릭 시 앱 종료되도록 처리하기 위해 BackPresCloseHandler 적용
+    **/
+    override fun onBackPressed() {
+        this.backPressCloseHandler!!.onBackPressed()
     }
 }
