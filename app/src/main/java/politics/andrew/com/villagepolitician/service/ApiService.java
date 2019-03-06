@@ -28,7 +28,7 @@ public class ApiService {
     public String test(String apiKey) {
         congressman = new Congressman();
 
-        congressman = getCongressman(0, 1, "name_kr", "asc", "", apiKey);
+        congressman = getCongressman("1", 0, 1, "name_kr", "asc", "", apiKey);
         Log.e("Error", "Congressman Info : " + congressman.getName_kr());
         return congressman.getName_kr();
     }
@@ -39,10 +39,10 @@ public class ApiService {
      * @Author : Andrew Kim
      * @Description : 국회의원 정보 가져오기 (1명의 정보 return)
     **/
-    public Congressman getCongressman(int page, int per_page, String sortQuery,  String sort, String queryWord, String apiKey) {
+    public Congressman getCongressman(String no, int page, int per_page, String sortQuery,  String sort, String queryWord, String apiKey) {
         try {
             Congressman.CongressmanListInterface service = client.create(Congressman.CongressmanListInterface.class);
-            Call<ArrayList<Congressman>> call = ((Congressman.CongressmanListInterface) service).get_congressman_list(page, per_page, sortQuery, sort, queryWord, apiKey);
+            Call<ArrayList<Congressman>> call = ((Congressman.CongressmanInfoInterface) service).get_congressman_info(no, page, per_page, sortQuery, sort, queryWord, apiKey);
 
             List<Congressman> tmpCongressMan = call.execute().body();
             congressman = tmpCongressMan.get(0);

@@ -1,15 +1,13 @@
 package politics.andrew.com.villagepolitician.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.AbsListView
-import android.widget.Adapter
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_congressman_list.*
 import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.adapter.CongressmanListAdapter
@@ -51,29 +49,44 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         var policy: StrictMode.ThreadPolicy? = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        progressBar = findViewById(R.id.congressman_list_progressbar)
+        progressBar = findViewById(R.id.congressman_list_progressbar)    // 진행상태 표시용 progress bar 생성
 
+        // 국회의원 리스트 표시를 위한 Adapter 설정
         congressmanListAdapter = CongressmanListAdapter(this, congressmanList)
         congressmanListView.adapter = congressmanListAdapter
         congressmanListView.setOnScrollListener(this)
 
         apiService = ApiService()
 
-        val congressmanIntent = intent
+        val congressmanIntent = intent    // Activity 호출 시 넘겨받을 값이 담겨있는 intent
         //val apiKey: String = congressmanIntent.getStringExtra("apiKey")
-        apiKey = congressmanIntent.getStringExtra("apiKey")
+        apiKey = congressmanIntent.getStringExtra("apiKey")    // intent에서 필요한 데이터 확인
         sortQuery = "name_kr"
         sort  = "asc"
         queryWord = ""
 
         handler = Handler()
 
+        // API 서비스 호출을 위해 별도의ㅡ thread 생성
+        // API 서비스와 같은 외부 데이터 접근을 main thread 에서 진행 시 오류 발생 되므로 별도의 thread 생성하여 외부 데이터 접근 처리
         Thread(Runnable {
             Looper.prepare()
             getCongressmanList(apiKey, sortQuery, sort, queryWord)
             Looper.loop()
         }).start()
 
+        /**
+        congressmanListView.onItemClickListener = object: AdapterView.OnItemClickListener {
+            override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                var item: Congressman = Congressman()
+                item = parent.getItemAtPosition(position) as Congressman
+                var no: String = item.no
+
+                Toast.makeText(applicationContext, "Clicked Item No : " + no, Toast.LENGTH_LONG).show()
+            }
+        }
+        **/
+        congressmanListView.setOnItemClickListener(itemClickListener())    // 리스트 내 아이템 클릭 시 반응 처리를 위한 item click listener 설정
     }
 
     /**
@@ -87,6 +100,26 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         val congressman: String
         congressman = apiService!!.test(apiKey)
         return congressman
+    }
+
+    /**
+     * @File : itemClickListener
+     * @Date : 2019-03-06 오후 2:20
+     * @Author : Andrew Kim
+     * @Description : 국회의원 리스트 아이템 클릭 시 상세 페이지 이동 처리를 위한 click listener
+    **/
+    fun itemClickListener(): AdapterView.OnItemClickListener = object: AdapterView.OnItemClickListener {
+        override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            var item: Congressman = Congressman()
+            item = parent!!.getItemAtPosition(position) as Congressman
+            var no: String = item.no
+
+            val congressmanIntent = Intent(applicationContext, CongressmanDetailActivity::class.java)
+            congressmanIntent.putExtra("no", no)
+            startActivity(congressmanIntent)
+
+            //Toast.makeText(applicationContext, "Clicked Item No : " + no, Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onScrollStateChanged(absListView: AbsListView, scrollState: Int) {

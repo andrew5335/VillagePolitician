@@ -11,6 +11,7 @@ import android.widget.TextView;
  * @Description : 국회의원 정보를 담기 위한 view holder
 **/
 public class CongressmanViewHolder {
+
     public ImageView congressmanPhoto;    // 국회의원 사진
     public TextView congressmanParty;    // 국회의원 소속 정당
     public TextView congressmanDistrict;    // 국회의원 지역구

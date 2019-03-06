@@ -21,6 +21,7 @@ public class Congressman implements Serializable {
 
     private static final long serialVersionUID = 2472869833554749578L;
 
+        @SerializedName("no") String no;    // 번호
         @SerializedName("name_kr") String name_kr;    // 한글 이름
         @SerializedName("name_cn") String name_cn;    // 한자 이름
         @SerializedName("name_en") String name_en;    // 영문 이름
@@ -40,6 +41,7 @@ public class Congressman implements Serializable {
         @SerializedName("photo") String photo;    // 사진 주소
         @SerializedName("url") String url;    // 국회 홈페이지 상세 주소
 
+        public String getNo() { return no; }
         public String getName_kr() { return name_kr; }
         public String getName_cn() { return name_cn; }
         public String getName_en() { return name_en; }
@@ -59,6 +61,12 @@ public class Congressman implements Serializable {
         public String getPhoto() { return photo; }
         public String getUrl() { return url; }
 
+    /**
+     * @File : CongressmanListInterface
+     * @Date : 2019-03-06 오후 5:28
+     * @Author : Andrew Kim
+     * @Description : API 호출 interface (국회의원 목록 호출)
+    **/
     public interface CongressmanListInterface {
         @GET("/politician/congressman/v1/1.0.0/congressmanList.php")
         Call<ArrayList<Congressman>> get_congressman_list(
@@ -68,6 +76,25 @@ public class Congressman implements Serializable {
           , @Query("sort") String sort
           , @Query("queryWord") String queryWord
           , @Query("apiKey") String apiKey
+        );
+    }
+
+    /**
+     * @File : CongressmanInfoInterface
+     * @Date : 2019-03-06 오후 5:34
+     * @Author : Andrew Kim
+     * @Description : API 호출 interface (국회의원 1명의 정보 호출)
+    **/
+    public interface CongressmanInfoInterface {
+        @GET("/politician/congressman/v1/1.0.0/congressmanList.php")
+        Call<ArrayList<Congressman>> get_congressman_info(
+                @Query("no") String no
+                , @Query("page") int page
+                , @Query("per_page") int per_page
+                , @Query("sortQuery") String  sortQuery
+                , @Query("sort") String sort
+                , @Query("queryWord") String queryWord
+                , @Query("apiKey") String apiKey
         );
     }
 
