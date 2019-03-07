@@ -27,6 +27,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="70dp"
                             android:layout_gravity="center_horizontal|center_vertical|center"
+                            android:gravity="center_horizontal|center_vertical|center"
                             app:layout_scrollFlags="scroll|enterAlways"
                             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
