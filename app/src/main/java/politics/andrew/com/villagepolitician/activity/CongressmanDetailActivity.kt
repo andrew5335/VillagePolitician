@@ -24,8 +24,9 @@ class CongressmanDetailActivity : BaseActivity() {
         StrictMode.setThreadPolicy(policy)
 
         var congressmanIntent = intent    // Activity 호출 시 넘겨받을 값이 담겨있는 intent 설정
-        val no = congressmanIntent.getStringExtra("no")    // intent 에서 필요 데이터 확인
+        val no = congressmanIntent.getStringExtra("no")    // intent에서 필요 데이터 확인 - no값
+        val name_kr = congressmanIntent.getStringExtra("name_kr")    // intent에서 필요 데이터 확인 - 한글 이름 값
 
-        Toast.makeText(applicationContext, "Variable No : " + no, Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "Variable No : " + no + "-" + name_kr, Toast.LENGTH_LONG).show()
     }
 }

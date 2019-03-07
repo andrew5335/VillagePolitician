@@ -49,6 +49,7 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         var policy: StrictMode.ThreadPolicy? = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
+        setSupportActionBar(congressmanToolBar)
         progressBar = findViewById(R.id.congressman_list_progressbar)    // 진행상태 표시용 progress bar 생성
 
         // 국회의원 리스트 표시를 위한 Adapter 설정
@@ -113,15 +114,23 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
             var item: Congressman = Congressman()
             item = parent!!.getItemAtPosition(position) as Congressman
             var no: String = item.no
+            var name_kr: String = item.name_kr
 
             val congressmanIntent = Intent(applicationContext, CongressmanDetailActivity::class.java)
             congressmanIntent.putExtra("no", no)
+            congressmanIntent.putExtra("name_kr", name_kr)
             startActivity(congressmanIntent)
 
             //Toast.makeText(applicationContext, "Clicked Item No : " + no, Toast.LENGTH_LONG).show()
         }
     }
 
+    /**
+     * @File : onScrollStateChanged
+     * @Date : 2019-03-07 오후 4:41
+     * @Author : Andrew Kim
+     * @Description : 스크롤 상태 변경 시 처리
+    **/
     override fun onScrollStateChanged(absListView: AbsListView, scrollState: Int) {
         if(scrollState  == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastItemVisibleFlag && mLockListView == false) {
             progressBar!!.visibility = View.VISIBLE
@@ -130,11 +139,19 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         }
     }
 
+    /**
+     * @File : onScroll
+     * @Date : 2019-03-07 오후 4:42
+     * @Author : Andrew Kim
+     * @Description : 스크롤 시 처리
+    **/
     override fun onScroll(absListView: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
         lastItemVisibleFlag  = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount)
     }
 
     /**
+     *
+     *
      * @File : getCongressmanList
      * @Date : 2019-02-26 오후 3:36
      * @Author : Andrew Kim
@@ -152,7 +169,7 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         }
 
         handler!!.post {
-            page = page +   30
+            page = page + 30
             congressmanListAdapter!!.notifyDataSetChanged()
             progressBar!!.visibility = View.INVISIBLE
             congressmanListView.visibility = View.VISIBLE
