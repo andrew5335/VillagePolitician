@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
+import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.*
+import kotlinx.android.synthetic.main.actionbar_title.*
 import kotlinx.android.synthetic.main.activity_congressman_list.*
 import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.adapter.CongressmanListAdapter
