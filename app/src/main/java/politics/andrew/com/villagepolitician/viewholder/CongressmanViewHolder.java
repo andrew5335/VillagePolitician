@@ -13,7 +13,6 @@ import android.widget.TextView;
 public class CongressmanViewHolder {
 
     public ImageView congressmanPhoto;    // 국회의원 사진
-    public TextView congressmanParty;    // 국회의원 소속 정당
     public TextView congressmanDistrict;    // 국회의원 지역구
     public TextView congressmanNameKr;    // 국회의원 한글 이름
     public TextView congressnamNameCh;    // 국회의원 한문 이름

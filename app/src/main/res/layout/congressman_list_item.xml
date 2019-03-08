@@ -30,7 +30,7 @@
         android:text="한글이름"
         android:textColor="#000" />
 
-
+    <!--
     <TextView
         android:id="@+id/congressman_party"
         android:layout_width="wrap_content"
@@ -43,6 +43,7 @@
         app:layout_constraintTop_toTopOf="@id/congressman_name_kr"
         android:text="(소속정당)"
         android:textColor="#000" />
+        -->
 
     <TextView
         android:id="@+id/congressman_name_ch"

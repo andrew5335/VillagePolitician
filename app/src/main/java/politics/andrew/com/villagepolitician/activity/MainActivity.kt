@@ -59,7 +59,8 @@ class MainActivity(private var apiService: ApiService? = null) : BaseActivity() 
         //val text: String = apiService!!.test()
         //Toast.makeText(applicationContext, text, Toast.LENGTH_LONG).show();
         val congressmanIntent = Intent(applicationContext, CongressmanListActivity::class.java)
-        congressmanIntent.putExtra("apiKey", getString(R.string.apiKey))
+        //congressmanIntent.putExtra("apiKey", getString(R.string.apiKey))
+        congressmanIntent.putExtra("apiKey", getString(R.string.publicDataAuthKey))
         startActivity(congressmanIntent)
         //finish()
     }

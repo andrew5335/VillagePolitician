@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import org.w3c.dom.Text
 import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.interfacevo.Congressman
+import politics.andrew.com.villagepolitician.interfacevo.CongressmanListXml
 import politics.andrew.com.villagepolitician.viewholder.CongressmanViewHolder
 
 /**
@@ -24,7 +25,7 @@ import politics.andrew.com.villagepolitician.viewholder.CongressmanViewHolder
 * @Version : 1.0.0
 * @Description : 국회의원 리스트 뷰용 아답터
 **/
-class CongressmanListAdapter (val context: Context, val congressmanList: ArrayList<Congressman>) : BaseAdapter() {
+class CongressmanListAdapter (val context: Context, val congressmanList: ArrayList<CongressmanListXml>) : BaseAdapter() {
 
     /**
     * @File : getView
@@ -41,7 +42,6 @@ class CongressmanListAdapter (val context: Context, val congressmanList: ArrayLi
             view = LayoutInflater.from(context).inflate(R.layout.congressman_list_item, null)
             viewHolder = CongressmanViewHolder()
             viewHolder.congressmanPhoto = view.findViewById(R.id.congressman_photo)
-            viewHolder.congressmanParty = view.findViewById(R.id.congressman_party)
             viewHolder.congressmanNameKr = view.findViewById(R.id.congressman_name_kr)
             viewHolder.congressmanDistrict = view.findViewById(R.id.congressman_district)
             viewHolder.congressnamNameCh = view.findViewById(R.id.congressman_name_ch)
@@ -52,23 +52,17 @@ class CongressmanListAdapter (val context: Context, val congressmanList: ArrayLi
             viewHolder = convertView.tag as CongressmanViewHolder
             view = convertView
         }
-        //val congressman_photo = view.findViewById<ImageView>(R.id.congressman_photo)
-        //val congressman_name_kr = view.findViewById<TextView>(R.id.congressman_name_kr)
-        //val congressman_district = view.findViewById<TextView>(R.id.congressman_district)
-        //val congressman_name_ch = view.findViewById<TextView>(R.id.congressman_name_ch)
-        //val congressman_name_en = view.findViewById<TextView>(R.id.congressman_name_en)
 
         val congressman = congressmanList[position]
-        if(null != congressman.photo) {
+        if(null != congressman.jpgLink) {
             var requestOption = RequestOptions()
             requestOption.override(100, 100)
-            Glide.with(context).load(congressman.photo).apply(requestOption).into(viewHolder.congressmanPhoto)
+            Glide.with(context).load(congressman.jpgLink).apply(requestOption).into(viewHolder.congressmanPhoto)
         }
-        viewHolder.congressmanParty.text = "(" + congressman.party + ")"
-        viewHolder.congressmanNameKr.text = congressman.name_kr
-        viewHolder.congressmanDistrict.text = congressman.district
-        viewHolder.congressnamNameCh.text = congressman.name_cn
-        viewHolder.congressmanNameEn.text = congressman.name_en
+        viewHolder.congressmanNameKr.text = congressman.empNm
+        viewHolder.congressmanDistrict.text = congressman.origNm
+        viewHolder.congressnamNameCh.text = congressman.hjNm
+        viewHolder.congressmanNameEn.text = congressman.engNm
 
         return view
     }

@@ -15,7 +15,9 @@ import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.adapter.CongressmanListAdapter
 import politics.andrew.com.villagepolitician.handler.BackPressCloseHandler
 import politics.andrew.com.villagepolitician.interfacevo.Congressman
+import politics.andrew.com.villagepolitician.interfacevo.CongressmanListXml
 import politics.andrew.com.villagepolitician.service.ApiService
+import politics.andrew.com.villagepolitician.service.XmlApiService
 
 /**
  * @File : CongressmanListActivity.kt
@@ -29,12 +31,15 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
     //var test1: String? = null
     private var handler: Handler? = null
     private var runnable: Runnable? = null
-    private var apiService: ApiService? = null
+    //private var apiService: ApiService? = null
+    private var apiService: XmlApiService? = null
 
-    private var apiKey: String = ""
-    private var congressmanList = ArrayList<Congressman>()
+    private var apiKey: String = ""    // apikey 정보
+    private var serviceUrl: String = ""    // 서비스 주소
+    //private var congressmanList = ArrayList<Congressman>()
+    private var congressmanList = ArrayList<CongressmanListXml>()
     private var congressmanListAdapter: CongressmanListAdapter? = null
-    private var page: Int = 0    // 페이지 번호
+    private var page: Int = 1    // 페이지 번호
     private var per_page: Int = 30    // 한 페이지당 표시할 목록 수
     private var sortQuery: String = ""    // 검색 조건절에 들어갈 DB의 컬럼명 - name_kr, party 등의 컬럼명을 넣어주면 됨
     private var sort: String = ""    // 정렬 조건 - asc, desc 둘 중 하나로 세팅. 기본값은 asc
@@ -59,11 +64,13 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         congressmanListView.adapter = congressmanListAdapter
         congressmanListView.setOnScrollListener(this)
 
-        apiService = ApiService()
+        //apiService = ApiService()
+        apiService = XmlApiService()
 
         val congressmanIntent = intent    // Activity 호출 시 넘겨받을 값이 담겨있는 intent
         //val apiKey: String = congressmanIntent.getStringExtra("apiKey")
-        apiKey = congressmanIntent.getStringExtra("apiKey")    // intent에서 필요한 데이터 확인
+        apiKey = getString(R.string.publicDataAuthKey)    // intent에서 필요한 데이터 확인
+        serviceUrl = getString(R.string.congressmanListServiceUrl)    // 국회의원 리스트 서비스 주소
         sortQuery = "name_kr"
         sort  = "asc"
         queryWord = ""
@@ -74,7 +81,8 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         // API 서비스와 같은 외부 데이터 접근을 main thread 에서 진행 시 오류 발생 되므로 별도의 thread 생성하여 외부 데이터 접근 처리
         Thread(Runnable {
             Looper.prepare()
-            getCongressmanList(apiKey, sortQuery, sort, queryWord)
+            //getCongressmanList(apiKey, sortQuery, sort, queryWord)
+            getCongressmanList(apiKey, per_page, page)
             Looper.loop()
         }).start()
 
@@ -113,14 +121,14 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
     **/
     fun itemClickListener(): AdapterView.OnItemClickListener = object: AdapterView.OnItemClickListener {
         override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            var item: Congressman = Congressman()
-            item = parent!!.getItemAtPosition(position) as Congressman
-            var no: String = item.no
-            var name_kr: String = item.name_kr
+            var item: CongressmanListXml = CongressmanListXml()
+            item = parent!!.getItemAtPosition(position) as CongressmanListXml
+            var deptCd: Int = item.deptCd
+            var empNm: String = item.empNm
 
             val congressmanIntent = Intent(applicationContext, CongressmanDetailActivity::class.java)
-            congressmanIntent.putExtra("no", no)
-            congressmanIntent.putExtra("name_kr", name_kr)
+            congressmanIntent.putExtra("deptCd", deptCd)
+            congressmanIntent.putExtra("empNm", empNm)
             startActivity(congressmanIntent)
 
             //Toast.makeText(applicationContext, "Clicked Item No : " + no, Toast.LENGTH_LONG).show()
@@ -137,7 +145,8 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         if(scrollState  == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastItemVisibleFlag && mLockListView == false) {
             progressBar!!.visibility = View.VISIBLE
             congressmanListView.visibility = View.INVISIBLE
-            getCongressmanList(apiKey, sortQuery, sort, queryWord)
+            //etCongressmanList(apiKey, sortQuery, sort, queryWord)
+            getCongressmanList(apiKey, per_page, page)
         }
     }
 
@@ -159,10 +168,11 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
      * @Author : Andrew Kim
      * @Description : 국회의원 전체 리스트 가져오기
      **/
-    fun getCongressmanList(apiKey: String, sortQuery: String, sort: String, queryWord: String) {
+    fun getCongressmanList(serviceKey: String, numOfRows: Int, pageNo: Int) {
         mLockListView = true
-        var tmpCongressmanList = ArrayList<Congressman>()
-        tmpCongressmanList = apiService!!.getContressmanList(page, per_page, sortQuery, sort, queryWord, apiKey)
+        var tmpCongressmanList = ArrayList<CongressmanListXml>()
+        //tmpCongressmanList = apiService!!.getContressmanList(page, per_page, sortQuery, sort, queryWord, apiKey)
+        tmpCongressmanList = apiService!!.getCongressmanList(serviceKey, numOfRows, pageNo, serviceUrl)
 
         if(null != tmpCongressmanList) {
             for(item in tmpCongressmanList) {
@@ -171,7 +181,7 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         }
 
         handler!!.post {
-            page = page + 30
+            page = page + 1
             congressmanListAdapter!!.notifyDataSetChanged()
             progressBar!!.visibility = View.INVISIBLE
             congressmanListView.visibility = View.VISIBLE
