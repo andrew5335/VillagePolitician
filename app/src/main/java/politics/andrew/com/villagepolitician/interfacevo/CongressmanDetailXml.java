@@ -37,6 +37,8 @@ public class CongressmanDetailXml implements Serializable {
     @SerializedName("secretary2") String secretary2;    // 비서관 명단
     @SerializedName("shrtNm") String shrtNm;    // 소속위원회
     @SerializedName("staff") String staff;    // 보좌관 명단
+    @SerializedName("detpCd") int deptCd;    // 부서코드
+    @SerializedName("num") int num;    // 식별번호
 
     public String getAssemEmail() { return assemEmail; }
     public String getAssemTel() { return assemTel; }
@@ -55,6 +57,28 @@ public class CongressmanDetailXml implements Serializable {
     public String getSecretary2() { return secretary2; }
     public String getShrtNm() { return shrtNm; }
     public String getStaff() { return staff; }
+    public int getDeptCd() { return deptCd; }
+    public int getNum() { return num; }
+
+    public void setAssemEmail(String assemEmail) { this.assemEmail = assemEmail; }
+    public void setAssemTel(String assemTel) { this.assemTel = assemTel; }
+    public void setBthDate(String bthDate) { this.bthDate = bthDate; }
+    public void setElectionNum(String electionNum) { this.electionNum = electionNum; }
+    public void setEmpNm(String empNm) { this.empNm = empNm; }
+    public void setHjNm(String hjNm) { this.hjNm = hjNm; }
+    public void setEngNm(String engNm) {this.engNm = engNm; }
+    public void setExamCd(String examCd) { this.examCd = examCd; }
+    public void setHbbyCd(String hbbyCd) { this.hbbyCd = hbbyCd; }
+    public void setMemTitle(String memTitle) { this.memTitle = memTitle; }
+    public void setOrigNm(String origNm) { this.origNm = origNm; }
+    public void setPolyNm(String polyNm) { this.polyNm = polyNm; }
+    public void setReeleGbnNm(String reeleGbnNm) { this.reeleGbnNm = reeleGbnNm; }
+    public void setSecretary(String secretary) { this.secretary = secretary; }
+    public void setSecretary2(String secretary2) { this.secretary2 = secretary2; }
+    public void setShrtNm(String shrtNm) { this.shrtNm = shrtNm; }
+    public void setStaff(String staff) { this.staff = staff; }
+    public void setDeptCd(int deptCd) { this.deptCd = deptCd; }
+    public void setNum(int num) { this.num = num; }
 
     public interface CongressmanDetailInterface {
         @GET("getMemberDetailInfoList")

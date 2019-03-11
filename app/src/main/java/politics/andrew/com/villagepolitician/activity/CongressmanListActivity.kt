@@ -124,11 +124,11 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
             var item: CongressmanListXml = CongressmanListXml()
             item = parent!!.getItemAtPosition(position) as CongressmanListXml
             var deptCd: Int = item.deptCd
-            var empNm: String = item.empNm
+            var num: Int = item.num
 
             val congressmanIntent = Intent(applicationContext, CongressmanDetailActivity::class.java)
             congressmanIntent.putExtra("deptCd", deptCd)
-            congressmanIntent.putExtra("empNm", empNm)
+            congressmanIntent.putExtra("num", num)
             startActivity(congressmanIntent)
 
             //Toast.makeText(applicationContext, "Clicked Item No : " + no, Toast.LENGTH_LONG).show()
