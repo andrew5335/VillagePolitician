@@ -77,9 +77,12 @@ public class XmlApiService {
                     NodeList nodeOrigNm = doc.getElementsByTagName("origNm");
                     NodeList nodeJpgLink = doc.getElementsByTagName("jpgLink");
 
+                    // 국회의원 정보 리스트 값이 있을 경우
                     for (int i = 0; i < nodeItem.getLength(); i++) {
                         congressman = new CongressmanListXml();
 
+                        // 정보를 가져오고자 하는 노드가 존재하며 세부 데이터가 있을 경우
+                        // 노드의 확인은 해당 nodelist의 length 및 childnode 를 가지고 있는지 유무로 판단
                         if(0 < nodeDeptCd.getLength()) { if(nodeDeptCd.item(i).hasChildNodes()) { congressman.setDeptCd(Integer.parseInt(nodeDeptCd.item(i).getFirstChild().getNodeValue())); } }
                         if(0 < nodeNum.getLength()) { if(nodeNum.item(i).hasChildNodes()) { congressman.setNum(Integer.parseInt(nodeNum.item(i).getFirstChild().getNodeValue())); } }
                         if(0 < nodeEmpNm.getLength()) { if(nodeEmpNm.item(i).hasChildNodes()) { congressman.setEmpNm(nodeEmpNm.item(i).getFirstChild().getNodeValue()); } }
@@ -104,6 +107,12 @@ public class XmlApiService {
         return congressmanList;
     }
 
+    /**
+     * @File : getCongressman
+     * @Date : 2019-03-13 오후 6:30
+     * @Author : Andrew Kim
+     * @Description : 국회의원 상세 정보 조회
+    **/
     public CongressmanDetailXml getCongressman(String serviceKey, int numOfRows, int pageNo, String serviceUrl, int dept_cd, int num) {
         congressmanDetailXml = new CongressmanDetailXml();
 

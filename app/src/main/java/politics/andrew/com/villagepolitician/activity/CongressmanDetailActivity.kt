@@ -63,7 +63,7 @@ class CongressmanDetailActivity : BaseActivity() {
 
         Thread(Runnable {
             Looper.prepare()
-            getCongressmanInfo(apiKey, serviceUrl, per_page, page, deptCd, num)    // 신규 thread에서 실행할 내용
+            getCongressmanInfo(apiKey, serviceUrl, per_page, page, deptCd, num)    // 국회의원 상세정보 호출
             Looper.loop()
         }).start()
     }
@@ -75,10 +75,11 @@ class CongressmanDetailActivity : BaseActivity() {
      * @Description : 국회의원 1명에 대한 상세 정보 가져오기
     **/
     fun getCongressmanInfo(serviceKey: String, serviceUrl: String, numOfRows: Int, pageNo: Int, deptCd: Int, num: Int) {
-        congressmanDetailXml = apiService!!.getCongressman(serviceKey, numOfRows, pageNo, serviceUrl, deptCd, num)
+        congressmanDetailXml = apiService!!.getCongressman(serviceKey, numOfRows, pageNo, serviceUrl, deptCd, num)    // 국회의원 상세정보 API 호출
 
         handler!!.post {
-            progressBar!!.visibility = View.INVISIBLE
+            progressBar!!.visibility = View.INVISIBLE     // 진행 상태 바 감추기
+            // 데이터가 있을 경우 해당 데이터 화면 처리 진행
             if(null != congressmanDetailXml && !Strings.isEmptyOrWhitespace(congressmanDetailXml.empNm)) {
                 Toast.makeText(applicationContext, "Congressman HJ Name : " + congressmanDetailXml.hjNm, Toast.LENGTH_LONG).show()
             }
