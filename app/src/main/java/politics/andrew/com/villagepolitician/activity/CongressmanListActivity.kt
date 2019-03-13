@@ -82,7 +82,7 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         Thread(Runnable {
             Looper.prepare()
             //getCongressmanList(apiKey, sortQuery, sort, queryWord)
-            getCongressmanList(apiKey, per_page, page)
+            getCongressmanList(apiKey, per_page, page)    // 신규 thread에서 실행할 내용
             Looper.loop()
         }).start()
 

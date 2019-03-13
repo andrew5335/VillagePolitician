@@ -54,7 +54,7 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <ProgressBar
-        android:id="@+id/congressman_list_progressbar"
+        android:id="@+id/congressman_detail_progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

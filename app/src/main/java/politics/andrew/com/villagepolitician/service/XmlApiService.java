@@ -80,14 +80,14 @@ public class XmlApiService {
                     for (int i = 0; i < nodeItem.getLength(); i++) {
                         congressman = new CongressmanListXml();
 
-                        congressman.setDeptCd(Integer.parseInt(nodeDeptCd.item(i).getFirstChild().getNodeValue()));
-                        congressman.setNum(Integer.parseInt(nodeNum.item(i).getFirstChild().getNodeValue()));
-                        congressman.setEmpNm(nodeEmpNm.item(i).getFirstChild().getNodeValue());
-                        congressman.setHjNm(nodeHjNm.item(i).getFirstChild().getNodeValue());
-                        congressman.setEngNm(nodeEngNm.item(i).getFirstChild().getNodeValue());
-                        congressman.setReeleGbnNm(nodeReeleGbnNm.item(i).getFirstChild().getNodeValue());
-                        congressman.setOrigNm(nodeOrigNm.item(i).getFirstChild().getNodeValue());
-                        congressman.setJpgLink(nodeJpgLink.item(i).getFirstChild().getNodeValue());
+                        if(0 < nodeDeptCd.getLength()) { if(nodeDeptCd.item(i).hasChildNodes()) { congressman.setDeptCd(Integer.parseInt(nodeDeptCd.item(i).getFirstChild().getNodeValue())); } }
+                        if(0 < nodeNum.getLength()) { if(nodeNum.item(i).hasChildNodes()) { congressman.setNum(Integer.parseInt(nodeNum.item(i).getFirstChild().getNodeValue())); } }
+                        if(0 < nodeEmpNm.getLength()) { if(nodeEmpNm.item(i).hasChildNodes()) { congressman.setEmpNm(nodeEmpNm.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < nodeHjNm.getLength()) { if(nodeHjNm.item(i).hasChildNodes()) { congressman.setHjNm(nodeHjNm.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < nodeEngNm.getLength()) { if(nodeEngNm.item(i).hasChildNodes()) { congressman.setEngNm(nodeEngNm.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < nodeReeleGbnNm.getLength()) { if(nodeReeleGbnNm.item(i).hasChildNodes()) { congressman.setReeleGbnNm(nodeReeleGbnNm.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < nodeOrigNm.getLength()) { if(nodeOrigNm.item(i).hasChildNodes()) { congressman.setOrigNm(nodeOrigNm.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < nodeJpgLink.getLength()) { if(nodeJpgLink.item(i).hasChildNodes()) { congressman.setJpgLink(nodeJpgLink.item(i).getFirstChild().getNodeValue()); } }
 
                         congressmanList.add(congressman);
                     }
@@ -113,7 +113,7 @@ public class XmlApiService {
                 if(null != String.valueOf(dept_cd) && 0 < dept_cd) {
                     if(null != String .valueOf(num) && 0 < num) {
                         try {
-                            detailServiceUrl = publicDataHost + serviceUrl + "?serviceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&dept_cd =" + dept_cd + "&num=" + num;
+                            detailServiceUrl = publicDataHost + serviceUrl + "?serviceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&dept_cd=" + dept_cd + "&num=" + num;
                             URL url = new URL(detailServiceUrl);
 
                             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -142,25 +142,25 @@ public class XmlApiService {
                             NodeList nodeStaff = doc.getElementsByTagName("staff");
 
                             for(int i=0; i < nodeItem.getLength(); i++) {
-                                congressmanDetailXml.setAssemEmail(nodeAssemEmail.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setAssemTel(nodeAssemTel.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setBthDate(nodeBthDate.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setElectionNum(nodeElectionNum.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setEmpNm(nodeEmpNm.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setEngNm(nodeEngNm.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setExamCd(nodeExamCd.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setHbbyCd(nodeHbbyCd.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setHjNm(nodeHjNm.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setMemTitle(nodeMemTitle.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setOrigNm(nodeOrigNm.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setPolyNm(nodePolyNm.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setReeleGbnNm(nodeReeleGbnNm.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setSecretary(nodeSectary.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setSecretary2(nodeSectary2.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setShrtNm(nodeShrtNm.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setStaff(nodeStaff.item(i).getFirstChild().getNodeValue());
-                                congressmanDetailXml.setDeptCd(dept_cd);
-                                congressmanDetailXml.setNum(num);
+                                if(0 < nodeAssemEmail.getLength()) { if(nodeAssemEmail.item(i).hasChildNodes()) { congressmanDetailXml.setAssemEmail(nodeAssemEmail.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeAssemTel.getLength()) { if(nodeAssemTel.item(i).hasChildNodes()) { congressmanDetailXml.setAssemTel(nodeAssemTel.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeBthDate.getLength()) { if(nodeBthDate.item(i).hasChildNodes()) { congressmanDetailXml.setBthDate(nodeBthDate.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeElectionNum.getLength()) { if(nodeElectionNum.item(i).hasChildNodes()) { congressmanDetailXml.setElectionNum(nodeElectionNum.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeEmpNm.getLength()) { if(nodeEmpNm.item(i).hasChildNodes()) { congressmanDetailXml.setEmpNm(nodeEmpNm.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeEngNm.getLength()) { if(nodeEngNm.item(i).hasChildNodes()) { congressmanDetailXml.setEngNm(nodeEngNm.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeExamCd.getLength()) { if(nodeExamCd.item(i).hasChildNodes()) { congressmanDetailXml.setExamCd(nodeExamCd.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeHbbyCd.getLength()) { if(nodeHbbyCd.item(i).hasChildNodes()) { congressmanDetailXml.setHbbyCd(nodeHbbyCd.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeHjNm.getLength()) { if(nodeHjNm.item(i).hasChildNodes()) { congressmanDetailXml.setHjNm(nodeHjNm.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeMemTitle.getLength()) { if(nodeMemTitle.item(i).hasChildNodes()) { congressmanDetailXml.setMemTitle(nodeMemTitle.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeOrigNm.getLength()) { if(nodeOrigNm.item(i).hasChildNodes()) { congressmanDetailXml.setOrigNm(nodeOrigNm.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodePolyNm.getLength()) { if(nodePolyNm.item(i).hasChildNodes()) { congressmanDetailXml.setPolyNm(nodePolyNm.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeReeleGbnNm.getLength()) { if(nodeReeleGbnNm.item(i).hasChildNodes()) { congressmanDetailXml.setReeleGbnNm(nodeReeleGbnNm.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeSectary.getLength()) { if(nodeSectary.item(i).hasChildNodes()) { congressmanDetailXml.setSecretary(nodeSectary.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeSectary2.getLength()) { if(nodeSectary2.item(i).hasChildNodes()) { congressmanDetailXml.setSecretary2(nodeSectary2.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeShrtNm.getLength()) { if(nodeShrtNm.item(i).hasChildNodes()) { congressmanDetailXml.setShrtNm(nodeShrtNm.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < nodeStaff.getLength()) { if(nodeStaff.item(i).hasChildNodes()) { congressmanDetailXml.setStaff(nodeStaff.item(i).getFirstChild().getNodeValue()); } }
+                                if(0 < dept_cd) { congressmanDetailXml.setDeptCd(dept_cd); }
+                                if(0 < num) { congressmanDetailXml.setNum(num); }
                             }
                         } catch (Exception e) {
                             Log.e("Error", "Congressman Detail API Call Error : " + e.toString());
