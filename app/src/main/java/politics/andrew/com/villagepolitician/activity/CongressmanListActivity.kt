@@ -125,10 +125,12 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
             item = parent!!.getItemAtPosition(position) as CongressmanListXml
             var deptCd: Int = item.deptCd
             var num: Int = item.num
+            var jpgLink: String = item.jpgLink
 
             val congressmanIntent = Intent(applicationContext, CongressmanDetailActivity::class.java)
             congressmanIntent.putExtra("deptCd", deptCd)
             congressmanIntent.putExtra("num", num)
+            congressmanIntent.putExtra("jpgLink", jpgLink)
             startActivity(congressmanIntent)
 
             //Toast.makeText(applicationContext, "Clicked Item No : " + no, Toast.LENGTH_LONG).show()

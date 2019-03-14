@@ -39,6 +39,7 @@ public class CongressmanDetailXml implements Serializable {
     @SerializedName("staff") String staff;    // 보좌관 명단
     @SerializedName("detpCd") int deptCd;    // 부서코드
     @SerializedName("num") int num;    // 식별번호
+    @SerializedName("jpgLink") String jpgLink;    // 국회의원 사진
 
     public String getAssemEmail() { return assemEmail; }
     public String getAssemTel() { return assemTel; }
@@ -59,6 +60,7 @@ public class CongressmanDetailXml implements Serializable {
     public String getStaff() { return staff; }
     public int getDeptCd() { return deptCd; }
     public int getNum() { return num; }
+    public String getJpgLink() { return jpgLink; }
 
     public void setAssemEmail(String assemEmail) { this.assemEmail = assemEmail; }
     public void setAssemTel(String assemTel) { this.assemTel = assemTel; }
@@ -79,6 +81,7 @@ public class CongressmanDetailXml implements Serializable {
     public void setStaff(String staff) { this.staff = staff; }
     public void setDeptCd(int deptCd) { this.deptCd = deptCd; }
     public void setNum(int num) { this.num = num; }
+    public void setJpgLink(String jpgLink) { this.jpgLink = jpgLink; }
 
     public interface CongressmanDetailInterface {
         @GET("getMemberDetailInfoList")

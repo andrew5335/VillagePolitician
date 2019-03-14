@@ -6,8 +6,11 @@ import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.common.util.Strings
 
 import politics.andrew.com.villagepolitician.R
@@ -35,8 +38,9 @@ class CongressmanDetailActivity : BaseActivity() {
 
     private var apiKey: String = ""    // apikey 정보
     private var serviceUrl: String = ""    // 서비스 주소
-    private var deptCd: Int = 0
-    private var num: Int = 0
+    private var deptCd: Int = 0    // 부서코드
+    private var num: Int = 0    // 식별코드
+    private var jpgLink: String = ""    // 국회의원 사진
     private var page: Int = 1    // 페이지 번호
     private var per_page: Int = 10    // 한 페이지당 표시할 목록 수
 
@@ -57,6 +61,7 @@ class CongressmanDetailActivity : BaseActivity() {
         var congressmanIntent = intent    // Activity 호출 시 넘겨받을 값이 담겨있는 intent 설정
         deptCd = congressmanIntent.getIntExtra("deptCd", 0)
         num = congressmanIntent.getIntExtra("num", 0)
+        jpgLink = congressmanIntent.getStringExtra("jpgLink")
         Toast.makeText(applicationContext, "DeptCd: " + deptCd + " / Num  : " + num, Toast.LENGTH_LONG).show()
 
         handler = Handler()
@@ -81,7 +86,11 @@ class CongressmanDetailActivity : BaseActivity() {
             progressBar!!.visibility = View.INVISIBLE     // 진행 상태 바 감추기
             // 데이터가 있을 경우 해당 데이터 화면 처리 진행
             if(null != congressmanDetailXml && !Strings.isEmptyOrWhitespace(congressmanDetailXml.empNm)) {
-                Toast.makeText(applicationContext, "Congressman HJ Name : " + congressmanDetailXml.hjNm, Toast.LENGTH_LONG).show()
+                //Toast.makeText(applicationContext, "Congressman HJ Name : " + congressmanDetailXml.hjNm, Toast.LENGTH_LONG).show()
+                var congressmanPhoto: ImageView = findViewById(R.id.congressman_photo)
+                var requestOption = RequestOptions()
+                requestOption.override(105, 200)
+                Glide.with(applicationContext).load(jpgLink).apply(requestOption).into(congressmanPhoto)    // 국회의원 사진 배치
             }
         }
     }
