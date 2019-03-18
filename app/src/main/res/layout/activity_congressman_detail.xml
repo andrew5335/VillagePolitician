@@ -53,13 +53,34 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_weight="112"
+                    android:layout_weight="14"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="3dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/congressman_kr_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textSize="24dp"
+                        android:text="홍 길 동"
+                        android:textColor="#000" />
+
+                    <TextView
+                        android:id="@+id/congressman_hj_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="(홍 길 동)"
+                        android:textColor="#000" />
+
+                    <TextView
+                        android:id="@+id/congressman_eng_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="Hong Gil Dong"
+                        android:textColor="#000" />
 
                 </LinearLayout>
 

@@ -8,6 +8,7 @@ import android.os.StrictMode
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -91,6 +92,14 @@ class CongressmanDetailActivity : BaseActivity() {
                 var requestOption = RequestOptions()
                 requestOption.override(105, 200)
                 Glide.with(applicationContext).load(jpgLink).apply(requestOption).into(congressmanPhoto)    // 국회의원 사진 배치
+
+                var congressmanKrName: TextView = findViewById(R.id.congressman_kr_name)
+                var congressmanHjName: TextView = findViewById(R.id.congressman_hj_name)
+                var congressmanEngName: TextView = findViewById(R.id.congressman_eng_name)
+
+                congressmanKrName.text = congressmanDetailXml.empNm
+                congressmanHjName.text = congressmanDetailXml.hjNm
+                congressmanEngName.text = congressmanDetailXml.engNm
             }
         }
     }
