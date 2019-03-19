@@ -37,18 +37,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fillViewport="true"
+                    android:background="#fff"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" >
 
-                                <ListView
-                                    android:id="@+id/congressmanListView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:nestedScrollingEnabled="true"
-                                    android:background="#fff" />
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="left|center_horizontal|center_vertical"
+                                android:background="#fff" >
+
+                                    <Spinner
+                                        android:id="@+id/congressman_list_spinner"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:theme="@android:style/Theme.Holo.Light.DarkActionBar"/>
+
+                            </RelativeLayout>
+
+                            <ListView
+                                android:id="@+id/congressmanListView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:nestedScrollingEnabled="true"
+                                android:background="#fff" />
 
                         </LinearLayout>
 

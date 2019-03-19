@@ -7,15 +7,18 @@ import android.os.Looper
 import android.os.StrictMode
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.actionbar_title.*
 import kotlinx.android.synthetic.main.activity_congressman_list.*
 import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.adapter.CongressmanListAdapter
+import politics.andrew.com.villagepolitician.adapter.PartySpinnerAdapter
 import politics.andrew.com.villagepolitician.handler.BackPressCloseHandler
 import politics.andrew.com.villagepolitician.interfacevo.Congressman
 import politics.andrew.com.villagepolitician.interfacevo.CongressmanListXml
+import politics.andrew.com.villagepolitician.interfacevo.Party
 import politics.andrew.com.villagepolitician.service.ApiService
 import politics.andrew.com.villagepolitician.service.XmlApiService
 
@@ -30,15 +33,18 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
 
     //var test1: String? = null
     private var handler: Handler? = null
-    private var runnable: Runnable? = null
-    //private var apiService: ApiService? = null
+    private var spinnerHandler: Handler? = null
+
     private var apiService: XmlApiService? = null
 
     private var apiKey: String = ""    // apikey 정보
-    private var serviceUrl: String = ""    // 서비스 주소
-    //private var congressmanList = ArrayList<Congressman>()
+    private var serviceUrl: String = ""    // 국회의원 목록 정보 호출 서비스 주소
+    private var partyServiceUrl: String = ""    // 정당 정보 호출 서비스 주소
+
     private var congressmanList = ArrayList<CongressmanListXml>()
     private var congressmanListAdapter: CongressmanListAdapter? = null
+    private var partyList = ArrayList<Party>()
+    private var spinnerArrayAdapter: ArrayAdapter<Party>? = null
     private var page: Int = 1    // 페이지 번호
     private var per_page: Int = 30    // 한 페이지당 표시할 목록 수
     private var sortQuery: String = ""    // 검색 조건절에 들어갈 DB의 컬럼명 - name_kr, party 등의 컬럼명을 넣어주면 됨
@@ -59,21 +65,32 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         setSupportActionBar(congressmanToolBar)
         progressBar = findViewById(R.id.congressman_list_progressbar)    // 진행상태 표시용 progress bar 생성
 
-        // 국회의원 리스트 표시를 위한 Adapter 설정
-        congressmanListAdapter = CongressmanListAdapter(this, congressmanList)
-        congressmanListView.adapter = congressmanListAdapter
-        congressmanListView.setOnScrollListener(this)
-
-        //apiService = ApiService()
+        // API 호출 정보 설정
         apiService = XmlApiService()
-
-        val congressmanIntent = intent    // Activity 호출 시 넘겨받을 값이 담겨있는 intent
-        //val apiKey: String = congressmanIntent.getStringExtra("apiKey")
         apiKey = getString(R.string.publicDataAuthKey)    // intent에서 필요한 데이터 확인
         serviceUrl = getString(R.string.congressmanListServiceUrl)    // 국회의원 리스트 서비스 주소
         sortQuery = "name_kr"
         sort  = "asc"
         queryWord = ""
+        partyServiceUrl = getString(R.string.partyServiceUrl)    // 정당 정보 호출 서비스 주소
+
+        // 국회의원 리스트 표시를 위한 Adapter 설정
+        congressmanListAdapter = CongressmanListAdapter(this, congressmanList)
+        congressmanListView.adapter = congressmanListAdapter
+        congressmanListView.setOnScrollListener(this)
+
+        // spinner 데이터 표시를 위한 Adapter 설정 및 데이터 생성
+        spinnerArrayAdapter = PartySpinnerAdapter(this, R.layout.congressman_spinner_item, partyList)
+        spinnerArrayAdapter!!.setDropDownViewResource(R.layout.congressman_spinner_item)
+        congressman_list_spinner.adapter = spinnerArrayAdapter
+
+        spinnerHandler = Handler()
+
+        Thread(Runnable {
+            Looper.prepare()
+            getPartyInfo(apiKey)
+            Looper.loop()
+        }).start()
 
         handler = Handler()
 
@@ -132,8 +149,6 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
             congressmanIntent.putExtra("num", num)
             congressmanIntent.putExtra("jpgLink", jpgLink)
             startActivity(congressmanIntent)
-
-            //Toast.makeText(applicationContext, "Clicked Item No : " + no, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -145,7 +160,7 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
     **/
     override fun onScrollStateChanged(absListView: AbsListView, scrollState: Int) {
         if(scrollState  == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastItemVisibleFlag && mLockListView == false) {
-            progressBar!!.visibility = View.VISIBLE
+            congressman_list_progressbar.visibility = View.VISIBLE
             congressmanListView.visibility = View.INVISIBLE
             //etCongressmanList(apiKey, sortQuery, sort, queryWord)
             getCongressmanList(apiKey, per_page, page)
@@ -174,7 +189,11 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         mLockListView = true
         var tmpCongressmanList = ArrayList<CongressmanListXml>()
         //tmpCongressmanList = apiService!!.getContressmanList(page, per_page, sortQuery, sort, queryWord, apiKey)
-        tmpCongressmanList = apiService!!.getCongressmanList(serviceKey, numOfRows, pageNo, serviceUrl)
+        try {
+            tmpCongressmanList = apiService!!.getCongressmanList(serviceKey, numOfRows, pageNo, serviceUrl)
+        } catch(e: Exception) {
+            Log.e("Error", "Congressman List API Call Error : " + e.toString())
+        }
 
         if(null != tmpCongressmanList) {
             for(item in tmpCongressmanList) {
@@ -190,12 +209,33 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
             mLockListView = false
         }
 
-        /**
-        handler!!.postDelayed({
-        congressmanListAdapter!!.notifyDataSetChanged()
-        }, 500)
-         **/
-        //return congressmanList
+    }
+
+    /**
+     * @File : getPartyInfo
+     * @Date : 2019-03-19 오후 2:54
+     * @Author : Andrew Kim
+     * @Description : 정당 정보 조회
+    **/
+    fun getPartyInfo(serviceKey: String){
+        var tmpPartyList = ArrayList<Party>()
+
+        try {
+            tmpPartyList = apiService!!.getParty(serviceKey, partyServiceUrl)
+        } catch(e: Exception) {
+            Log.e("Error", "Party Info API Call Error : " + e.toString())
+        }
+
+        if(null != tmpPartyList) {
+            for(item in tmpPartyList) {
+                partyList.add(item)
+            }
+        }
+
+        spinnerHandler!!.post{
+            spinnerArrayAdapter!!.notifyDataSetChanged()
+        }
+
     }
 
     /**

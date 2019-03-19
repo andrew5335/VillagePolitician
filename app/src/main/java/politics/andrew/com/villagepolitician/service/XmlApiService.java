@@ -15,6 +15,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import politics.andrew.com.villagepolitician.interfacevo.CongressmanDetailXml;
 import politics.andrew.com.villagepolitician.interfacevo.CongressmanListXml;
+import politics.andrew.com.villagepolitician.interfacevo.Party;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
@@ -31,12 +32,15 @@ public class XmlApiService {
     private String publicDataHost = "http://apis.data.go.kr/9710000/NationalAssemblyInfoService/";    // 공공데이터 포탈의 국회의원 정보 서비스 기본 호스트
     private String listServiceUrl = "";    // 국회의원 리스트 정보 호출 서비스 주소값
     private String detailServiceUrl = "";    // 국회의원 상세정보 호출 서비스 주소값
+    private String partyServiceUrl = "";    // 정당 정보 호출 서비스 주소값
 
     //rivate Retrofit client = new Retrofit.Builder().baseUrl(publicDataUrl).addConverterFactory(SimpleXmlConverterFactory.create()).build();
 
     private ArrayList<CongressmanListXml> congressmanList;    // 국회의원 리스트 객체
     private CongressmanListXml congressman;
     private CongressmanDetailXml congressmanDetailXml;    // 국호의원 상세정보 객체
+    private Party party;    // 정당 정보 객체
+    private ArrayList<Party> partyList;    // 정당 정보 리스트
 
     private Document doc = null;
 
@@ -105,6 +109,55 @@ public class XmlApiService {
         }
 
         return congressmanList;
+    }
+
+    /**
+     * @File : getParty
+     * @Date : 2019-03-19 오후 2:01
+     * @Author : Andrew Kim
+     * @Description : 정당 정보 조회
+    **/
+    public ArrayList<Party> getParty(String serviceKey, String serviceUrl) {
+        partyList = new ArrayList<Party>();
+
+        // 서비스키와 서비스 호출 주소가 있어야 정당 정보 조회가 가능하므로...
+        if(null != serviceKey && !"".equals(serviceKey)) {
+            if(null != serviceUrl && !"".equals(serviceUrl)) {
+                try {
+                    partyServiceUrl = publicDataHost + serviceUrl + "?serviceKey=" + serviceKey;
+                    URL url = new URL(partyServiceUrl);
+
+                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder builder = factory.newDocumentBuilder();
+
+                    doc = builder.parse(new InputSource(url.openStream()));
+                    doc.getDocumentElement().normalize();
+
+                    NodeList nodeItem = doc.getElementsByTagName("item");
+                    NodeList nodePolyCd = doc.getElementsByTagName("polyCd");
+                    NodeList nodePolyNm = doc.getElementsByTagName("polyNm");
+
+                    // 정당 정보 리스트 값이 있을 경우
+                    for (int i = 0; i < nodeItem.getLength(); i++) {
+                        party = new Party();
+                        // 정보를 가져오고자 하는 노드가 존재하며 해당 노드에 값이 있을 경우 해당 값을 객체에 세팅
+                        // 노드의 확인은 해당 nodelist의 length 및 childnode 를 가지고 있는지 유무로 판단
+                        if(0 < nodePolyCd.getLength()) { if(nodePolyCd.item(i).hasChildNodes()) { party.setPolyCd(Integer.parseInt(nodePolyCd.item(i).getFirstChild().getNodeValue())); } }
+                        if(0 < nodePolyNm.getLength()) { if(nodePolyNm.item(i).hasChildNodes()) { party.setPolyNm(nodePolyNm.item(i).getFirstChild().getNodeValue()); } }
+
+                        partyList.add(party);
+                    }
+                } catch(Exception e) {
+                    Log.e("Error", "Party Info XML API Call Error : " + e.toString());
+                }
+            } else {
+                Log.e("Error", "Party Info XML API Call Error : API 호출에 필요한 호출 URL이 없습니다.");
+            }
+        } else {
+            Log.e("Error", "Party Info XML API Call Error : API 호출에 필요한 서비스키가 없습니다.");
+        }
+
+        return partyList;
     }
 
     /**
@@ -189,4 +242,6 @@ public class XmlApiService {
 
         return congressmanDetailXml;
     }
+
+
 }
