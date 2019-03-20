@@ -115,6 +115,22 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         }
         **/
         congressmanListView.setOnItemClickListener(itemClickListener())    // 리스트 내 아이템 클릭 시 반응 처리를 위한 item click listener 설정
+
+        // spinner item select 시 처리
+        congressman_list_spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                congressman_list_spinner.prompt = "선택"
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var item: Party = Party()
+                item = parent!!.getItemAtPosition(position) as Party
+                val polyCd: Int = item.polyCd
+                val polyNm: String = item.polyNm
+
+                Toast.makeText(applicationContext, "Party Name & CD : " + polyNm + polyCd, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     /**
@@ -149,6 +165,16 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
             congressmanIntent.putExtra("num", num)
             congressmanIntent.putExtra("jpgLink", jpgLink)
             startActivity(congressmanIntent)
+        }
+    }
+
+    fun itemSelectedListener(): AdapterView.OnItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+        }
+
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
         }
     }
 

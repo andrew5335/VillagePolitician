@@ -5,6 +5,7 @@
     <!-- Naver Api Call Info-->
     <string name="naverClientId">FmCk55S0fsU0oxmKKJZE</string>
     <string name="naverClientSecret">W65VXtmHr3</string>
+    <string name="naverSearchApiUrl">https://openapi.naver.com</string>
 
     <!--Kakao Api Call Info-->
     <string name="kakaoNativeAppKey">0364a4bdfbb7a51bd6d3f67fa58b02c8</string>
