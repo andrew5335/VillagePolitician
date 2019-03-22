@@ -9,6 +9,9 @@ import org.xml.sax.InputSource;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -55,7 +58,7 @@ public class XmlApiService {
      * @Author : Andrew Kim
      * @Description : 국회의원 목록 조회
     **/
-    public ArrayList<CongressmanListXml> getCongressmanList(String serviceKey, int numOfRows, int pageNo, String serviceUrl) {
+    public ArrayList<CongressmanListXml> getCongressmanList(String serviceKey, int numOfRows, int pageNo, String serviceUrl, String searchKeyWord, String searchGu) {
         congressmanList = new ArrayList<CongressmanListXml>();
 
         // 서비스키와 서비스 주소가 있어야 API 호출이 가능하므로 서비스키와 서비스 주소 유무를 확인한다.
@@ -63,6 +66,13 @@ public class XmlApiService {
             if(null != serviceUrl && !"".equals(serviceUrl)) {
                 try {
                     listServiceUrl = publicDataHost + serviceUrl + "?serviceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&pageNo=" + pageNo;
+                    if(null != searchGu && !"".equals(searchGu)) {
+                        if("partySearch".equals(searchGu)) {
+                            listServiceUrl = listServiceUrl + "&poly_cd=" + searchKeyWord;
+                        } else if("nameSearch".equals(searchGu)) {
+                            listServiceUrl = listServiceUrl + "&hgnm=" + searchKeyWord;
+                        }
+                    }
                     URL url = new URL(listServiceUrl);
 
                     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -119,6 +129,16 @@ public class XmlApiService {
     **/
     public ArrayList<Party> getParty(String serviceKey, String serviceUrl) {
         partyList = new ArrayList<Party>();
+        party = new Party();
+        party.setPolyNm("선택");
+        party.setPolyCd(0);
+        partyList.add(party);
+
+        party = new Party();
+        party.setPolyNm("전체");
+        party.setPolyCd(1);
+        partyList.add(party);
+
 
         // 서비스키와 서비스 호출 주소가 있어야 정당 정보 조회가 가능하므로...
         if(null != serviceKey && !"".equals(serviceKey)) {
@@ -147,6 +167,13 @@ public class XmlApiService {
 
                         partyList.add(party);
                     }
+
+                    Collections.sort(partyList, new Comparator<Party>() {
+                        @Override
+                        public int compare(Party party1, Party party2) {
+                            return String.valueOf(party1.getPolyCd()).compareTo(String.valueOf(party2.getPolyCd()));
+                        }
+                    });
                 } catch(Exception e) {
                     Log.e("Error", "Party Info XML API Call Error : " + e.toString());
                 }
@@ -173,7 +200,7 @@ public class XmlApiService {
         if(null != serviceKey && !"".equals(serviceKey)) {
             if(null != serviceUrl && !"".equals(serviceUrl)) {
                 if(null != String.valueOf(dept_cd) && 0 < dept_cd) {
-                    if(null != String .valueOf(num) && 0 < num) {
+                    //if(null != String .valueOf(num) && 0 < num) {
                         try {
                             detailServiceUrl = publicDataHost + serviceUrl + "?serviceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&dept_cd=" + dept_cd + "&num=" + num;
                             URL url = new URL(detailServiceUrl);
@@ -227,9 +254,9 @@ public class XmlApiService {
                         } catch (Exception e) {
                             Log.e("Error", "Congressman Detail API Call Error : " + e.toString());
                         }
-                    } else {
-                        Log.e("Error", "Congressman Detail API Call Error : 국회의원 상세정보 호출에 필요한 식별코드가 없습니다.");
-                    }
+                    //} else {
+                    //    Log.e("Error", "Congressman Detail API Call Error : 국회의원 상세정보 호출에 필요한 식별코드가 없습니다.");
+                    //}
                 } else {
                     Log.e("Error", "Congressman Detail API Call Error : 국회의원 상세정보 호출에 필요한 부서코드가 없습니다.");
                 }

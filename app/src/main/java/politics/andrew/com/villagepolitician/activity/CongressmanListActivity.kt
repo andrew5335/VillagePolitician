@@ -38,18 +38,23 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
     private var apiService: XmlApiService? = null
 
     private var apiKey: String = ""    // apikey 정보
-    private var serviceUrl: String = ""    // 국회의원 목록 정보 호출 서비스 주소
-    private var partyServiceUrl: String = ""    // 정당 정보 호출 서비스 주소
+    private var serviceUrl: String = ""    // API 호출 주소 세팅용
+    private var listServiceUrl: String = ""    // 국회의원 전체 리스트 서비스 주소
+    private var partyServiceUrl: String = ""    // 정당 목록 리스트 서비스 주소
+    private var partySearchServiceUrl: String = ""    // 정당별 국회의원 리스트 검색 서비스 주소
+    private var nameSearchServiceUrl: String = ""    // 국회의원 이름 검색 서비스 주소
 
     private var congressmanList = ArrayList<CongressmanListXml>()
     private var congressmanListAdapter: CongressmanListAdapter? = null
     private var partyList = ArrayList<Party>()
     private var spinnerArrayAdapter: ArrayAdapter<Party>? = null
+
     private var page: Int = 1    // 페이지 번호
     private var per_page: Int = 30    // 한 페이지당 표시할 목록 수
     private var sortQuery: String = ""    // 검색 조건절에 들어갈 DB의 컬럼명 - name_kr, party 등의 컬럼명을 넣어주면 됨
     private var sort: String = ""    // 정렬 조건 - asc, desc 둘 중 하나로 세팅. 기본값은 asc
     private var queryWord: String = ""    // 검색 키워드 - 검색 조건절의 값에 대응하는 검색어로서 정치인 이름이나 소속 정당명 등이 들어갈 수 있음
+    private var searchGu: String = ""    // 검색 종류 구분값 - partySearch : 정당별 검색, nameSearch : 이름 검색
 
     private var progressBar: ProgressBar? = null
     private var lastItemVisibleFlag: Boolean = false
@@ -65,14 +70,43 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         setSupportActionBar(congressmanToolBar)
         progressBar = findViewById(R.id.congressman_list_progressbar)    // 진행상태 표시용 progress bar 생성
 
+        val congressmanIntent = intent
+        val polyCd = congressmanIntent.getIntExtra("polyCd", 0)    // 정당별 검색 시 사용되는 코드
+        val hgNm = congressmanIntent.getStringExtra("hgNm")    // 이름 검색 시 사용되는 이름값
+
         // API 호출 정보 설정
         apiService = XmlApiService()
         apiKey = getString(R.string.publicDataAuthKey)    // intent에서 필요한 데이터 확인
-        serviceUrl = getString(R.string.congressmanListServiceUrl)    // 국회의원 리스트 서비스 주소
+
+        listServiceUrl = getString(R.string.congressmanListServiceUrl)    // 국회의원 리스트 서비스 주소
+        partyServiceUrl = getString(R.string.partyServiceUrl)    // 정당 목록 리스트 서비스 주소
+        partySearchServiceUrl = getString(R.string.partySearchServiceUrl)    // 정당별 국회의원 리스트 검색 서비스 주소
+        nameSearchServiceUrl = getString(R.string.nameSearchServiceUrl)    // 국회의원 이름 검색 서비스 주소
+
         sortQuery = "name_kr"
         sort  = "asc"
         queryWord = ""
         partyServiceUrl = getString(R.string.partyServiceUrl)    // 정당 정보 호출 서비스 주소
+
+        // 정당 검색용 코드가 있을 경우
+        if(0 < polyCd) {
+            if(null != hgNm && !"".equals(hgNm)) {
+                // 정당 검색용 코드가 있으면서 이름 검색용 이름값도 있을 경우에는 이름 검색 우선
+                serviceUrl = nameSearchServiceUrl
+                searchGu = "nameSearch"
+                queryWord = hgNm
+            } else {
+                serviceUrl = partySearchServiceUrl
+                searchGu = "partySearch"
+                queryWord = polyCd.toString()
+            }
+        } else if(null != hgNm && !"".equals(hgNm)) {
+            serviceUrl = nameSearchServiceUrl
+            searchGu = "nameSearch"
+            queryWord = hgNm
+        } else {
+            serviceUrl = listServiceUrl
+        }
 
         // 국회의원 리스트 표시를 위한 Adapter 설정
         congressmanListAdapter = CongressmanListAdapter(this, congressmanList)
@@ -87,10 +121,12 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         spinnerHandler = Handler()
 
         Thread(Runnable {
-            Looper.prepare()
+            //Looper.prepare()
             getPartyInfo(apiKey)
-            Looper.loop()
+            //Looper.loop()
         }).start()
+
+        //congressman_list_spinner.prompt = "선택"
 
         handler = Handler()
 
@@ -128,7 +164,18 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
                 val polyCd: Int = item.polyCd
                 val polyNm: String = item.polyNm
 
-                Toast.makeText(applicationContext, "Party Name & CD : " + polyNm + polyCd, Toast.LENGTH_LONG).show()
+                if(0 < polyCd) {
+                    val congressmanSearchIntent = Intent(applicationContext, CongressmanListActivity::class.java)
+
+                    if(1 < polyCd) {
+                        congressmanSearchIntent.putExtra("polyCd", polyCd)
+                        congressmanSearchIntent.putExtra("polyNm", polyNm)
+                    }
+                    startActivity(congressmanSearchIntent)
+                    finish()
+                }
+
+                //Toast.makeText(applicationContext, "Party Name & CD : " + polyNm + polyCd, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -156,15 +203,17 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             var item: CongressmanListXml = CongressmanListXml()
             item = parent!!.getItemAtPosition(position) as CongressmanListXml
-            var deptCd: Int = item.deptCd
-            var num: Int = item.num
-            var jpgLink: String = item.jpgLink
+            val deptCd: Int = item.deptCd
+            val num: Int = item.num
+            val jpgLink: String = item.jpgLink
 
-            val congressmanIntent = Intent(applicationContext, CongressmanDetailActivity::class.java)
-            congressmanIntent.putExtra("deptCd", deptCd)
-            congressmanIntent.putExtra("num", num)
-            congressmanIntent.putExtra("jpgLink", jpgLink)
-            startActivity(congressmanIntent)
+            if(0 < deptCd) {
+                val congressmanIntent = Intent(applicationContext, CongressmanDetailActivity::class.java)
+                congressmanIntent.putExtra("deptCd", deptCd)
+                congressmanIntent.putExtra("num", num)
+                congressmanIntent.putExtra("jpgLink", jpgLink)
+                startActivity(congressmanIntent)
+            }
         }
     }
 
@@ -216,7 +265,7 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         var tmpCongressmanList = ArrayList<CongressmanListXml>()
         //tmpCongressmanList = apiService!!.getContressmanList(page, per_page, sortQuery, sort, queryWord, apiKey)
         try {
-            tmpCongressmanList = apiService!!.getCongressmanList(serviceKey, numOfRows, pageNo, serviceUrl)
+            tmpCongressmanList = apiService!!.getCongressmanList(serviceKey, numOfRows, pageNo, serviceUrl, queryWord, searchGu)
         } catch(e: Exception) {
             Log.e("Error", "Congressman List API Call Error : " + e.toString())
         }
@@ -261,7 +310,18 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         spinnerHandler!!.post{
             spinnerArrayAdapter!!.notifyDataSetChanged()
         }
+    }
 
+    fun onSearchTxtClicked(v: View) {
+        searchTxt.text.clear()
+    }
+
+    fun onSearchBtnClicked(v: View) {
+        val congressmanIntent = Intent(applicationContext, CongressmanListActivity::class.java)
+        congressmanIntent.putExtra("hgNm", searchTxt.text.toString());
+        //Toast.makeText(applicationContext, "Name : " + searchTxt.text, Toast.LENGTH_LONG).show()
+        startActivity(congressmanIntent)
+        finish()
     }
 
     /**

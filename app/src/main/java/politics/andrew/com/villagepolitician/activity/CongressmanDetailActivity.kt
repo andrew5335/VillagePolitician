@@ -59,7 +59,7 @@ class CongressmanDetailActivity : BaseActivity() {
         apiKey = getString(R.string.publicDataAuthKey)    // intent에서 필요한 데이터 확인
         serviceUrl = getString(R.string.congressmanDetailServiceUrl)    // 국회의원 리스트 서비스 주소
 
-        var congressmanIntent = intent    // Activity 호출 시 넘겨받을 값이 담겨있는 intent 설정
+        val congressmanIntent = intent    // Activity 호출 시 넘겨받을 값이 담겨있는 intent 설정
         deptCd = congressmanIntent.getIntExtra("deptCd", 0)
         num = congressmanIntent.getIntExtra("num", 0)
         jpgLink = congressmanIntent.getStringExtra("jpgLink")

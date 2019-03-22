@@ -17,4 +17,6 @@
     <string name="congressmanListServiceUrl">getMemberCurrStateList</string>
     <string name="congressmanDetailServiceUrl">getMemberDetailInfoList</string>
     <string name="partyServiceUrl">getPolySearch</string>
+    <string name="partySearchServiceUrl">getJungDangMemberCurrStateList</string>
+    <string name="nameSearchServiceUrl">getMemberNameInfoList</string>
 </resources>
