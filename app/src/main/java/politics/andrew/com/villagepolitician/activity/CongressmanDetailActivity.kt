@@ -1,5 +1,6 @@
 package politics.andrew.com.villagepolitician.activity
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -13,6 +14,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.common.util.Strings
+import kotlinx.android.synthetic.main.activity_congressman_detail.*
 
 import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.interfacevo.CongressmanDetailXml
@@ -102,5 +104,12 @@ class CongressmanDetailActivity : BaseActivity() {
                 congressmanEngName.text = congressmanDetailXml.engNm
             }
         }
+    }
+
+    fun onNewsViewBtnClicked(v: View) {
+        //Toast.makeText(applicationContext, "Name : " + congressman_kr_name.text, Toast.LENGTH_LONG).show()
+        val newsIntent = Intent(applicationContext, NewsListActivity::class.java)
+        newsIntent.putExtra("query", congressman_kr_name.text)
+        startActivity(newsIntent)
     }
 }

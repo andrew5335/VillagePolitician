@@ -2,6 +2,7 @@ package politics.andrew.com.villagepolitician.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import politics.andrew.com.villagepolitician.R
 
 class NewsListActivity : AppCompatActivity() {
@@ -12,6 +13,8 @@ class NewsListActivity : AppCompatActivity() {
 
         val newsIntent = intent
 
+        val name = newsIntent.getStringExtra("query");
 
+        Toast.makeText(applicationContext, "Congressman Name for Search : " + name, Toast.LENGTH_LONG).show()
     }
 }

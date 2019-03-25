@@ -82,6 +82,13 @@
                         android:text="Hong Gil Dong"
                         android:textColor="#000" />
 
+                    <Button
+                        android:id="@+id/news_view_btn"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:text="관련뉴스"
+                        android:onClick="onNewsViewBtnClicked"/>
+
                 </LinearLayout>
 
             </LinearLayout>
