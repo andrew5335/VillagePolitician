@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import politics.andrew.com.villagepolitician.interfacevo.Congressman;
+import politics.andrew.com.villagepolitician.interfacevo.NaverNewsSearch;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -19,12 +20,34 @@ import retrofit2.converter.gson.GsonConverterFactory;
 **/
 public class ApiService {
 
-    private String eye2webHost = "http://www.eye2web.co.kr";
-    private Congressman congressman;
-    private ArrayList<Congressman> congressmanList;
+    //private String eye2webHost = "http://www.eye2web.co.kr";
+    private String naverHost = "https://openapi.naver.com";
+    //private Congressman congressman;
+    //private ArrayList<Congressman> congressmanList;
+    private NaverNewsSearch naverNewsSearch;
+    private ArrayList<NaverNewsSearch>  naverNewsSearchList;
 
-    private Retrofit client = new Retrofit.Builder().baseUrl(eye2webHost).addConverterFactory(GsonConverterFactory.create()).build();    // json type data 연동을 위한 Retrofit client 생성
+    private Retrofit client = new Retrofit.Builder().baseUrl(naverHost).addConverterFactory(GsonConverterFactory.create()).build();    // json type data 연동을 위한 Retrofit client 생성
 
+    /**
+     * @File : getNaverNewsSearchList
+     * @Date : 2019-03-25 오후 1:56
+     * @Author : Andrew Kim
+     * @Description : 네이버 뉴스 검색 결과 리스트 가져오기
+    **/
+    private ArrayList<NaverNewsSearch> getNaverNewsSearchList(String query, int display, int start, String sort) {
+        try {
+            NaverNewsSearch.NaverSearchListInterface service = client.create(NaverNewsSearch.NaverSearchListInterface.class);
+            Call<ArrayList<NaverNewsSearch>> call = ((NaverNewsSearch.NaverSearchListInterface) service).get_news_list(query, display, start, sort);
+
+            naverNewsSearchList = call.execute().body();
+        } catch(Exception e) {
+            Log.e("Error", "Naver News Search API Call Error : " + e.toString());
+        }
+
+        return naverNewsSearchList;
+    }
+    /**
     public String test(String apiKey) {
         congressman = new Congressman();
 
@@ -32,6 +55,7 @@ public class ApiService {
         Log.e("Error", "Congressman Info : " + congressman.getName_kr());
         return congressman.getName_kr();
     }
+     **/
 
     /**
      * @File : getCongressmman
@@ -39,6 +63,7 @@ public class ApiService {
      * @Author : Andrew Kim
      * @Description : 국회의원 정보 가져오기 (1명의 정보 return)
     **/
+    /**
     public Congressman getCongressman(String no, int page, int per_page, String sortQuery,  String sort, String queryWord, String apiKey) {
         try {
             Congressman.CongressmanListInterface service = client.create(Congressman.CongressmanListInterface.class);
@@ -52,6 +77,7 @@ public class ApiService {
 
         return congressman;
     }
+     **/
 
     /**
      * @File : getCongressmanList
@@ -59,6 +85,7 @@ public class ApiService {
      * @Author : Andrew Kim
      * @Description : 국회의원 정보 가져오기 (국회의원 목록 return)
     **/
+    /**
     public ArrayList<Congressman> getContressmanList(int page, int per_page, String sortQuery, String sort, String queryWord, String apiKey) {
         try {
             Congressman.CongressmanListInterface service = client.create(Congressman.CongressmanListInterface.class);
@@ -71,4 +98,5 @@ public class ApiService {
 
         return congressmanList;
     }
+     **/
 }

@@ -3,6 +3,7 @@ package politics.andrew.com.villagepolitician.interfacevo;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import kotlin.UseExperimental;
 import retrofit2.Call;
@@ -44,6 +45,17 @@ public class NaverNewsSearch implements Serializable {
         @Headers({"X-Naver-Client-Id: FmCk55S0fsU0oxmKKJZE", "X-Naver-Client-Secret: W65VXtmHr3"})
         @GET("/v1/search/news.json")
         Call<NaverNewsSearch> get_news_info(
+                @Query("query") String query
+                , @Query("display") int display
+                , @Query("start") int start
+                , @Query("sort") String sort
+        );
+    }
+
+    public interface NaverSearchListInterface {
+        @Headers({"X-Naver-Client-Id: FmCk55S0fsU0oxmKKJZE", "X-Naver-Client-Secret: W65VXtmHr3"})
+        @GET("/v1/search/news.json")
+        Call<ArrayList<NaverNewsSearch>> get_news_list(
                 @Query("query") String query
                 , @Query("display") int display
                 , @Query("start") int start
