@@ -25,7 +25,7 @@ public class ApiService {
     //private Congressman congressman;
     //private ArrayList<Congressman> congressmanList;
     private NaverNewsSearch naverNewsSearch;
-    private ArrayList<NaverNewsSearch>  naverNewsSearchList;
+    private NaverNewsSearch  naverNewsInfo;
 
     private Retrofit client = new Retrofit.Builder().baseUrl(naverHost).addConverterFactory(GsonConverterFactory.create()).build();    // json type data 연동을 위한 Retrofit client 생성
 
@@ -35,17 +35,17 @@ public class ApiService {
      * @Author : Andrew Kim
      * @Description : 네이버 뉴스 검색 결과 리스트 가져오기
     **/
-    private ArrayList<NaverNewsSearch> getNaverNewsSearchList(String query, int display, int start, String sort) {
+    public NaverNewsSearch getNaverNewsSearchList(String query, int display, int start, String sort) {
         try {
-            NaverNewsSearch.NaverSearchListInterface service = client.create(NaverNewsSearch.NaverSearchListInterface.class);
-            Call<ArrayList<NaverNewsSearch>> call = ((NaverNewsSearch.NaverSearchListInterface) service).get_news_list(query, display, start, sort);
+            NaverNewsSearch.NaverSearchInterface service = client.create(NaverNewsSearch.NaverSearchInterface.class);
+            Call<NaverNewsSearch> call = ((NaverNewsSearch.NaverSearchInterface) service).get_news_info(query, display, start, sort);
 
-            naverNewsSearchList = call.execute().body();
+            naverNewsInfo = call.execute().body();
         } catch(Exception e) {
             Log.e("Error", "Naver News Search API Call Error : " + e.toString());
         }
 
-        return naverNewsSearchList;
+        return naverNewsInfo;
     }
     /**
     public String test(String apiKey) {

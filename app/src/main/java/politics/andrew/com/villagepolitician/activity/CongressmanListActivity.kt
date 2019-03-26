@@ -217,16 +217,6 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         }
     }
 
-    fun itemSelectedListener(): AdapterView.OnItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-        }
-
-        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-        }
-    }
-
     /**
      * @File : onScrollStateChanged
      * @Date : 2019-03-07 오후 4:41
@@ -270,7 +260,7 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
             Log.e("Error", "Congressman List API Call Error : " + e.toString())
         }
 
-        if(null != tmpCongressmanList) {
+        if(null != tmpCongressmanList && 0 < tmpCongressmanList.size) {
             for(item in tmpCongressmanList) {
                 congressmanList.add(item)
             }
