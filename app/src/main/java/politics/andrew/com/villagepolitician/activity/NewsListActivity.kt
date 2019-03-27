@@ -75,12 +75,13 @@ class NewsListActivity : BaseActivity(), AbsListView.OnScrollListener {
         override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             //var item: NaverNewsSearch.Items = NaverNewsSearch.Items
             var item: NaverNewsSearch.Items = parent!!.getItemAtPosition(position) as NaverNewsSearch.Items
-            val originallink = item.originallink
+            //val originallink = item.originallink
+            val link = item.link
 
-            if(null != originallink && !"".equals(originallink)) {
-                //Toast.makeText(applicationContext, "Data : " + originallink, Toast.LENGTH_LONG).show()
+            if(null != link && !"".equals(link)) {
+                //Toast.makeText(applicationContext, "Data : " + link, Toast.LENGTH_LONG).show()
                 val newsIntent = Intent(applicationContext, NewsViewActivity::class.java)
-                newsIntent.putExtra("newsUrl", originallink)
+                newsIntent.putExtra("newsUrl", link)
                 startActivity(newsIntent)
             }
         }
