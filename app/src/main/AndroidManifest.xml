@@ -19,7 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.NewsViewActivity"></activity>
+        <activity android:name=".activity.ScheduleListActivity"></activity>
+        <activity android:name=".activity.BillListActivity" />
+        <activity android:name=".activity.NewsViewActivity" />
         <activity android:name=".activity.NewsListActivity" />
         <activity android:name=".activity.CongressmanDetailActivity" />
         <activity android:name=".activity.SplashActivity">

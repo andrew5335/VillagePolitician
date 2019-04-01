@@ -27,18 +27,7 @@ class MainActivity(private var apiService: ApiService? = null) : BaseActivity() 
 
         var policy: StrictMode.ThreadPolicy? = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
-
-        //apiService = ApiService()
-        //val result: String = getResult("Hello Andrew !!!")
-        //printStr(result)
-        //test1.setOnClickListener { onTest1Clicked() }
-        //test2.setOnClickListener { onTest2Clicked() }
-        //test3.setOnClickListener { onTest3Clicked() }
     }
-
-    //fun printStr(str: String) {
-    //    helloWorld.text = str
-    //}
 
     /**
     fun getResult(str: String): String {
@@ -55,21 +44,16 @@ class MainActivity(private var apiService: ApiService? = null) : BaseActivity() 
      * @Description : 국회의원 목록 보기 버튼
     **/
     fun onCongressmanClicked(v: View) {
-        //Toast.makeText(applicationContext, "test1 clicked...", Toast.LENGTH_LONG).show()
-        //val text: String = apiService!!.test()
-        //Toast.makeText(applicationContext, text, Toast.LENGTH_LONG).show();
         val congressmanIntent = Intent(applicationContext, CongressmanListActivity::class.java)
-        //congressmanIntent.putExtra("apiKey", getString(R.string.apiKey))
         congressmanIntent.putExtra("apiKey", getString(R.string.publicDataAuthKey))
         startActivity(congressmanIntent)
-        //finish()
     }
 
-    fun onTest2Clicked(v: View) {
+    fun onBillListBtnClicked(v: View) {
         Toast.makeText(applicationContext, "test2 clicked", Toast.LENGTH_LONG).show()
     }
 
-    fun onTest3Clicked(v: View) {
+    fun onSheduleListBtnClicked(v: View) {
         Toast.makeText(applicationContext, "test3 clicked", Toast.LENGTH_LONG).show()
     }
 

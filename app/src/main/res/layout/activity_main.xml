@@ -22,7 +22,7 @@
         android:onClick="onCongressmanClicked"/>
 
     <TextView
-        android:id="@+id/test2"
+        android:id="@+id/billListBtn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -33,10 +33,10 @@
         android:textSize="20dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="1dp"
-        android:onClick="onTest2Clicked"/>
+        android:onClick="onBillListBtnClicked"/>
 
     <TextView
-        android:id="@+id/test3"
+        android:id="@+id/scheduleListBtn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -47,5 +47,5 @@
         android:textSize="20dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="1dp"
-        android:onClick="onTest3Clicked" />
+        android:onClick="onSheduleListBtnClicked" />
 </LinearLayout>
