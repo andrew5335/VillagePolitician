@@ -18,6 +18,13 @@ import politics.andrew.com.villagepolitician.adapter.NaverNewsListAdapter
 import politics.andrew.com.villagepolitician.interfacevo.NaverNewsSearch
 import politics.andrew.com.villagepolitician.service.ApiService
 
+/**
+ * @File : NewsListActivity.kt
+ * @Date : 2019-04-02 오전 9:43
+ * @Author : Andrew Kim
+ * @Version : 1.0.0
+ * @Description : 국회의원 연관 뉴스 목록
+**/
 class NewsListActivity : BaseActivity(), AbsListView.OnScrollListener {
 
     private var handler: Handler? = null
@@ -45,7 +52,7 @@ class NewsListActivity : BaseActivity(), AbsListView.OnScrollListener {
         StrictMode.setThreadPolicy(policy)
 
         setSupportActionBar(naverNewsToolBar)
-        progressBar = findViewById(R.id.naverNews_list_progressbar)    // 진행상태 표시용 progress bar 생성
+        progressBar = naverNews_list_progressbar    // 진행상태 표시용 progress bar 생성
 
         val newsIntent = intent
         val name = newsIntent.getStringExtra("query")
@@ -67,19 +74,20 @@ class NewsListActivity : BaseActivity(), AbsListView.OnScrollListener {
         }).start()
 
         naverNewsListView.setOnItemClickListener(itemClickListener())
-
-        //Toast.makeText(applicationContext, "Congressman Name for Search : " + name, Toast.LENGTH_LONG).show()
     }
 
+    /**
+     * @File : itemClickListener
+     * @Date : 2019-04-02 오전 9:45
+     * @Author : Andrew Kim
+     * @Description : 뉴스 목록 클릭 시 처리
+    **/
     fun itemClickListener(): AdapterView.OnItemClickListener = object: AdapterView.OnItemClickListener {
         override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            //var item: NaverNewsSearch.Items = NaverNewsSearch.Items
             var item: NaverNewsSearch.Items = parent!!.getItemAtPosition(position) as NaverNewsSearch.Items
-            //val originallink = item.originallink
             val link = item.link
 
             if(null != link && !"".equals(link)) {
-                //Toast.makeText(applicationContext, "Data : " + link, Toast.LENGTH_LONG).show()
                 val newsIntent = Intent(applicationContext, NewsViewActivity::class.java)
                 newsIntent.putExtra("newsUrl", link)
                 startActivity(newsIntent)
@@ -87,6 +95,12 @@ class NewsListActivity : BaseActivity(), AbsListView.OnScrollListener {
         }
     }
 
+    /**
+     * @File : onScrollStateChanged
+     * @Date : 2019-04-02 오전 9:45
+     * @Author : Andrew Kim
+     * @Description : 스크롤 변경 시 처리
+    **/
     override fun onScrollStateChanged(absListView: AbsListView, scrollState: Int) {
         if(scrollState  == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastItemVisibleFlag && mLockListView == false) {
             naverNews_list_progressbar.visibility = View.VISIBLE
@@ -95,10 +109,22 @@ class NewsListActivity : BaseActivity(), AbsListView.OnScrollListener {
         }
     }
 
+    /**
+     * @File : onScroll
+     * @Date : 2019-04-02 오전 9:46
+     * @Author : Andrew Kim
+     * @Description : 스크롤 중 처리
+    **/
     override fun onScroll(absListView: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
         lastItemVisibleFlag  = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount)
     }
 
+    /**
+     * @File : getNewsList
+     * @Date : 2019-04-02 오전 9:46
+     * @Author : Andrew Kim
+     * @Description : 뉴스 목록 가져오기
+    **/
     fun getNewsList() {
         mLockListView = true
         var tmpNewsList = ArrayList<NaverNewsSearch.Items>()

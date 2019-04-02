@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.common.util.Strings
 import kotlinx.android.synthetic.main.activity_congressman_detail.*
+import kotlinx.android.synthetic.main.activity_congressman_list.*
 
 import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.interfacevo.CongressmanDetailXml
@@ -54,7 +55,8 @@ class CongressmanDetailActivity : BaseActivity() {
         var policy: StrictMode.ThreadPolicy? = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        progressBar = findViewById(R.id.congressman_detail_progressbar)    // 진행상태 표시용 progress bar 생성
+        setSupportActionBar(congressmanDetailToolBar)
+        progressBar = congressman_detail_progressbar    // 진행상태 표시용 progress bar 생성
 
         apiService = XmlApiService()
 
@@ -89,25 +91,18 @@ class CongressmanDetailActivity : BaseActivity() {
             progressBar!!.visibility = View.INVISIBLE     // 진행 상태 바 감추기
             // 데이터가 있을 경우 해당 데이터 화면 처리 진행
             if(null != congressmanDetailXml && !Strings.isEmptyOrWhitespace(congressmanDetailXml.empNm)) {
-                //Toast.makeText(applicationContext, "Congressman HJ Name : " + congressmanDetailXml.hjNm, Toast.LENGTH_LONG).show()
-                var congressmanPhoto: ImageView = findViewById(R.id.congressman_photo)
                 var requestOption = RequestOptions()
                 requestOption.override(105, 200)
-                Glide.with(applicationContext).load(jpgLink).apply(requestOption).into(congressmanPhoto)    // 국회의원 사진 배치
+                Glide.with(applicationContext).load(jpgLink).apply(requestOption).into(congressman_photo)    // 국회의원 사진 배치
 
-                var congressmanKrName: TextView = findViewById(R.id.congressman_kr_name)
-                var congressmanHjName: TextView = findViewById(R.id.congressman_hj_name)
-                var congressmanEngName: TextView = findViewById(R.id.congressman_eng_name)
-
-                congressmanKrName.text = congressmanDetailXml.empNm
-                congressmanHjName.text = congressmanDetailXml.hjNm
-                congressmanEngName.text = congressmanDetailXml.engNm
+                congressman_kr_name.text = congressmanDetailXml.empNm
+                congressman_hj_name.text = congressmanDetailXml.hjNm
+                congressman_eng_name.text = congressmanDetailXml.engNm
             }
         }
     }
 
     fun onNewsViewBtnClicked(v: View) {
-        //Toast.makeText(applicationContext, "Name : " + congressman_kr_name.text, Toast.LENGTH_LONG).show()
         val newsIntent = Intent(applicationContext, NewsListActivity::class.java)
         newsIntent.putExtra("query", congressman_kr_name.text)
         startActivity(newsIntent)

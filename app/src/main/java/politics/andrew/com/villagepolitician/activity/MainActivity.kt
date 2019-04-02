@@ -45,16 +45,32 @@ class MainActivity(private var apiService: ApiService? = null) : BaseActivity() 
     **/
     fun onCongressmanClicked(v: View) {
         val congressmanIntent = Intent(applicationContext, CongressmanListActivity::class.java)
-        congressmanIntent.putExtra("apiKey", getString(R.string.publicDataAuthKey))
+        //congressmanIntent.putExtra("apiKey", getString(R.string.publicDataAuthKey))
         startActivity(congressmanIntent)
     }
 
+    /**
+     * @File : onBillListBtnClicked
+     * @Date : 2019-04-02 오전 9:46
+     * @Author : Andrew Kim
+     * @Description : 의안정보 보기 버튼
+    **/
     fun onBillListBtnClicked(v: View) {
-        Toast.makeText(applicationContext, "test2 clicked", Toast.LENGTH_LONG).show()
+        //Toast.makeText(applicationContext, "test2 clicked", Toast.LENGTH_LONG).show()
+        val billIntent = Intent(applicationContext, BillListActivity::class.java)
+        startActivity(billIntent)
     }
 
+    /**
+     * @File : onScheduleBtnClicked
+     * @Date : 2019-04-02 오전 9:47
+     * @Author : Andrew Kim
+     * @Description : 의사일정 보기 버튼
+    **/
     fun onSheduleListBtnClicked(v: View) {
-        Toast.makeText(applicationContext, "test3 clicked", Toast.LENGTH_LONG).show()
+        //Toast.makeText(applicationContext, "test3 clicked", Toast.LENGTH_LONG).show()
+        val scheduleIntent = Intent(applicationContext, ScheduleListActivity::class.java)
+        startActivity(scheduleIntent)
     }
 
     /**

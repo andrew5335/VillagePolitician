@@ -34,7 +34,6 @@ class CongressmanListAdapter (val context: Context, val congressmanList: ArrayLi
     * @Description : 레이아웃 xml 파일의 view와 데이터 연결 처리
     **/
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        //val view:View = LayoutInflater.from(context).inflate(R.layout.congressman_list_item, null)
         val view: View
         val viewHolder: CongressmanViewHolder
 

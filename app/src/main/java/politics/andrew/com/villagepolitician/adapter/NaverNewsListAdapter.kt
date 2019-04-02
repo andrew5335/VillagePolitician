@@ -11,6 +11,13 @@ import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.interfacevo.NaverNewsSearch
 import politics.andrew.com.villagepolitician.viewholder.NaverNewsViewHolder
 
+/**
+ * @File : NaverNewsListAdapter
+ * @Date : 2019-04-02 오전 9:48
+ * @Author : Andrew Kim
+ * @Version : 1.0.0
+ * @Description : 네이버 뉴스 리스트 뷰용 아답터
+**/
 class NaverNewsListAdapter(val context:Context, val naverNewsList: ArrayList<NaverNewsSearch.Items>): BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {

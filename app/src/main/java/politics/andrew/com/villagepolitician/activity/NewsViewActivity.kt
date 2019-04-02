@@ -9,6 +9,13 @@ import kotlinx.android.synthetic.main.activity_news_view.*
 import politics.andrew.com.villagepolitician.R
 import politics.andrew.com.villagepolitician.client.WebChromeClt
 
+/**
+ * @File : NewsViewActivity
+ * @Date : 2019-04-02 오전 9:47
+ * @Author : Andrew Kim
+ * @Version : 1.0.0
+ * @Description : 뉴스 상세 보기
+**/
 class NewsViewActivity : AppCompatActivity() {
 
     var webView: WebView? = null

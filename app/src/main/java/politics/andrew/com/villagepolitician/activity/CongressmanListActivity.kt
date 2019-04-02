@@ -68,7 +68,7 @@ class CongressmanListActivity : BaseActivity(), AbsListView.OnScrollListener  {
         StrictMode.setThreadPolicy(policy)
 
         setSupportActionBar(congressmanToolBar)
-        progressBar = findViewById(R.id.congressman_list_progressbar)    // 진행상태 표시용 progress bar 생성
+        progressBar = congressman_list_progressbar    // 진행상태 표시용 progress bar 생성
 
         val congressmanIntent = intent
         val polyCd = congressmanIntent.getIntExtra("polyCd", 0)    // 정당별 검색 시 사용되는 코드

@@ -11,6 +11,13 @@ import java.util.List;
 
 import politics.andrew.com.villagepolitician.interfacevo.Party;
 
+/**
+ * @File : PartySpinnerAdapter
+ * @Date : 2019-04-02 오전 9:50
+ * @Author : Andrew Kim
+ * @Version : 1.0.0
+ * @Description : 정당 목록 스피너용 아답터
+**/
 public class PartySpinnerAdapter extends ArrayAdapter<Party> {
 
     private Context context;

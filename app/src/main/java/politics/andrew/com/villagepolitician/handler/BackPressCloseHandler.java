@@ -21,6 +21,12 @@ public class BackPressCloseHandler {
         this.activity = context;
     }
 
+    /**
+     * @File : onBackPressed
+     * @Date : 2019-04-02 오전 9:51
+     * @Author : Andrew Kim
+     * @Description : 뒤로가기 버튼 클릭 시 처리
+    **/
     public void onBackPressed() {
         if(System.currentTimeMillis() > this.backKeyPressedTime +  2000) {
             this.backKeyPressedTime = System.currentTimeMillis();
@@ -31,6 +37,12 @@ public class BackPressCloseHandler {
         }
     }
 
+    /**
+     * @File : showGuide
+     * @Date : 2019-04-02 오전 9:52
+     * @Author : Andrew Kim
+     * @Description : 안내문 보여주기
+    **/
     public void showGuide() {
         this.toast = Toast.makeText(this.activity, "뒤로가기 버튼을 한 번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_LONG);
         this.toast.show();
