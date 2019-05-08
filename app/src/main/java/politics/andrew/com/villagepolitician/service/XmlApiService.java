@@ -16,6 +16,7 @@ import java.util.Comparator;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import politics.andrew.com.villagepolitician.interfacevo.AgendaScheListXml;
 import politics.andrew.com.villagepolitician.interfacevo.CongressmanDetailXml;
 import politics.andrew.com.villagepolitician.interfacevo.CongressmanListXml;
 import politics.andrew.com.villagepolitician.interfacevo.Party;
@@ -33,6 +34,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public class XmlApiService {
 
     private String publicDataHost = "http://apis.data.go.kr/9710000/NationalAssemblyInfoService/";    // 공공데이터 포탈의 국회의원 정보 서비스 기본 호스트
+    private String agendaDataHost = "http://apis.data.go.kr/9710000/AgendaScheduleInfoService/";    // 공공데이터 포털의 의사일정 정보 서비스 기본 호스트
     private String listServiceUrl = "";    // 국회의원 리스트 정보 호출 서비스 주소값
     private String detailServiceUrl = "";    // 국회의원 상세정보 호출 서비스 주소값
     private String partyServiceUrl = "";    // 정당 정보 호출 서비스 주소값
@@ -42,6 +44,7 @@ public class XmlApiService {
     private ArrayList<CongressmanListXml> congressmanList;    // 국회의원 리스트 객체
     private CongressmanListXml congressman;
     private CongressmanDetailXml congressmanDetailXml;    // 국호의원 상세정보 객체
+    private AgendaScheListXml agendaScheListXml;    // 의사일정 목록정보 객체
     private Party party;    // 정당 정보 객체
     private ArrayList<Party> partyList;    // 정당 정보 리스트
 
@@ -270,5 +273,17 @@ public class XmlApiService {
         return congressmanDetailXml;
     }
 
+    /**
+     * @File : getAgendaScheList
+     * @Date : 2019-05-08 오후 3:37
+     * @Author : Andrew Kim
+     * @Description : 의사일정 목록 조회 / apiGu - 호출할 API 구분자, apiGu에 따라 serviceUrl, startDt/endDt 필수유무가 달라짐
+     *                  날짜별 의사일정 목록 조회 시는 startDt/endDt 필수
+     *                  회의별 의사일정 목록 조회 시는 startDt, endDt 필요없음
+    **/
+    public AgendaScheListXml getAgendaScheList(String serviceKey, int numOfRows, int pageNo, String serviceUrl, String gubun, String startDt, String endDt, String apiGu) {
+        agendaScheListXml = new AgendaScheListXml();
 
+        return agendaScheListXml;
+    }
 }
