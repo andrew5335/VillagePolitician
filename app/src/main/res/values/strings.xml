@@ -13,10 +13,16 @@
     <string name="kakaoAdminKey">c024aabffd8f513bc5e7b3c517402856</string>
 
     <!--data.go.kr Call Info-->
+    <!-- 국회의원 정보 조회 -->
     <string name="publicDataAuthKey">ZjtS%2F7q9SORXFBybZ%2FhYciDyQKRNeP3r0tc8r%2BQLOv97shkq%2FNDa6a7Fp4m9T2lhT5fSjOiB6XR4aD33p7ljvA%3D%3D</string>
     <string name="congressmanListServiceUrl">getMemberCurrStateList</string>
     <string name="congressmanDetailServiceUrl">getMemberDetailInfoList</string>
     <string name="partyServiceUrl">getPolySearch</string>
     <string name="partySearchServiceUrl">getJungDangMemberCurrStateList</string>
     <string name="nameSearchServiceUrl">getMemberNameInfoList</string>
+
+    <!-- 의사일정 정보 조회 -->
+    <string name="agendaScheListByDateServiceUrl">getGiganScheduleList</string>
+    <string name="agendaScheListByGubunServiceUrl">getGubunScheduleList</string>
+    <string name="agendaDetailServiceUrl">getDetailScheduleList</string>
 </resources>
