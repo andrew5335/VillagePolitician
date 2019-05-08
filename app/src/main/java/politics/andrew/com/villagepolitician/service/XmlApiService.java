@@ -17,12 +17,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import politics.andrew.com.villagepolitician.interfacevo.AgendaScheListXml;
+import politics.andrew.com.villagepolitician.interfacevo.AgendaDetailXml;
 import politics.andrew.com.villagepolitician.interfacevo.CongressmanDetailXml;
 import politics.andrew.com.villagepolitician.interfacevo.CongressmanListXml;
 import politics.andrew.com.villagepolitician.interfacevo.Party;
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+
 
 /**
  * @File : XmlApiService
@@ -45,6 +44,7 @@ public class XmlApiService {
     private CongressmanListXml congressman;
     private CongressmanDetailXml congressmanDetailXml;    // 국호의원 상세정보 객체
     private AgendaScheListXml agendaScheListXml;    // 의사일정 목록정보 객체
+    private AgendaDetailXml agendaDetailXml;    // 의사일정 상세정보 객체
     private Party party;    // 정당 정보 객체
     private ArrayList<Party> partyList;    // 정당 정보 리스트
 
@@ -285,5 +285,17 @@ public class XmlApiService {
         agendaScheListXml = new AgendaScheListXml();
 
         return agendaScheListXml;
+    }
+
+    /**
+     * @File : getAgendaDetailInfo
+     * @Date : 2019-05-08 오후 5:23
+     * @Author : Andrew Kim
+     * @Description : 의사일정 상세 정보 조회
+   **/
+    public AgendaDetailXml getAgendaDetailInfo(String serviceKey, int numOfRows, int pageNo, String serviceUrl, String gubun, int agendaId, int committeeId, int boardId, int recordId) {
+        agendaDetailXml = new AgendaDetailXml();
+
+        return agendaDetailXml;
     }
 }
