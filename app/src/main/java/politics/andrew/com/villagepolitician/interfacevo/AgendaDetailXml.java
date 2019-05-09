@@ -24,8 +24,8 @@ public class AgendaDetailXml implements Serializable {
     @SerializedName("meetingTi") String meetingTime;    // 회의시간
     @SerializedName("meetingDa") String meetingDay;    // 회의일자
     @SerializedName("content") String content;    // 내용
-    @SerializedName("expectBillH") String expectBillH;    // 예정보고서 hwp 파일 경로
-    @SerializedName("resultRepo") String resultRepo;    // 결과보고서 pdf 파일 경로
+    @SerializedName("expectBillHwpLink") String expectBillHwpLink;    // 예정보고서 hwp 파일 경로
+    @SerializedName("resultReportPdfLink") String resultReportPdfLink;    // 결과보고서 pdf 파일 경로
 
     public String getGubun() { return gubun; }
     public String getTitle() { return title; }
@@ -36,8 +36,8 @@ public class AgendaDetailXml implements Serializable {
     public String getMeetingTime() { return meetingTime; }
     public String getMeetingDay() { return meetingDay; }
     public String getContent() { return content; }
-    public String getExpectBillH() { return expectBillH; }
-    public String getResultRepo() { return resultRepo; }
+    public String getExpectBillHwpLink() { return expectBillHwpLink; }
+    public String getResultReportPdfLink() { return resultReportPdfLink; }
 
     public void setGubun(String gubun) { this.gubun = gubun; }
     public void setTitle(String title) { this.title = title; }
@@ -48,6 +48,6 @@ public class AgendaDetailXml implements Serializable {
     public void setMeetingTime(String meetingTime) { this.meetingTime = meetingTime; }
     public void setMeetingDay(String meetingDay) { this.meetingDay = meetingDay; }
     public void setContent(String content) { this.content = content; }
-    public void setExpectBillH(String expectBillH) { this.expectBillH = expectBillH; }
-    public void setResultRepo(String resultRepo) { this.resultRepo = resultRepo; }
+    public void setExpectBillHwpLink(String expectBillHwpLink) { this.expectBillHwpLink = expectBillHwpLink; }
+    public void setResultReportPdfLink(String resultReportPdfLink) { this.resultReportPdfLink = resultReportPdfLink; }
 }

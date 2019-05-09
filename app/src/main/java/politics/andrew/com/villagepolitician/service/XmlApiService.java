@@ -294,9 +294,7 @@ public class XmlApiService {
             if(null != serviceUrl && !"".equals(serviceUrl)) {
                 try {
                     // 구분값이 없을 경우에는 무조건 위원회 기준
-                    if(null == gubun && "".equals(gubun)) {
-                        gubun = "02";
-                    }
+                    if(null == gubun && "".equals(gubun)) { gubun = "02"; }
 
                     // 시작, 종료일이 없을 경우에는 오늘 일자 기준 최근 7일로 세팅
                     if((null == startDt && "".equals(startDt)) || (null == endDt && "".equals(endDt))) {
@@ -378,8 +376,64 @@ public class XmlApiService {
      * @Author : Andrew Kim
      * @Description : 의사일정 상세 정보 조회
    **/
-    public AgendaDetailXml getAgendaDetailInfo(String serviceKey, int numOfRows, int pageNo, String serviceUrl, String gubun, int agendaId, int committeeId, int boardId, int recordId) {
+    public AgendaDetailXml getAgendaDetailInfo(String serviceKey, int numOfRows, int pageNo, String serviceUrl, String gubun, int committeeId, int boardId, int recordId) {
         agendaDetailXml = new AgendaDetailXml();
+
+        if(null != serviceKey && !"".equals(serviceKey)) {
+            if(null != serviceUrl && !"".equals(serviceUrl)) {
+                if(0 < committeeId) {
+                    if(0 < boardId) {
+                        if(0 < recordId) {
+                            try {
+                                agendaDetailServiceUrl = agendaDataHost + serviceUrl + "?serviceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&gubun=" + gubun + "&agendaId=-" + "&committee_id=" + committeeId + "&board_id=" + boardId + "&record_id=" + recordId;
+                                URL url = new URL(agendaDetailServiceUrl);
+
+                                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                                DocumentBuilder builder = factory.newDocumentBuilder();
+
+                                doc = builder.parse(new InputSource(url.openStream()));
+                                doc.getDocumentElement().normalize();
+
+                                NodeList nodeItem = doc.getElementsByTagName("item");
+                                NodeList agendaId = doc.getElementsByTagName("agendaId");
+                                NodeList cha = doc.getElementsByTagName("cha");
+                                NodeList content = doc.getElementsByTagName("content");
+                                NodeList expectBillHwpLink = doc.getElementsByTagName("expectBillHwpLink");
+                                NodeList meetingDay = doc.getElementsByTagName("meetingDay");
+                                NodeList meetingTime = doc.getElementsByTagName("meetingTime");
+                                NodeList resultReportPdfLink = doc.getElementsByTagName("resultReportPdfLink");
+                                NodeList sessNm = doc.getElementsByTagName("sessNm");
+                                NodeList title = doc.getElementsByTagName("title");
+
+                                for(int i=0; i < nodeItem.getLength(); i++) {
+                                    if(0 < agendaId.getLength()) { if(agendaId.item(i).hasChildNodes()) { agendaDetailXml.setAgendaId(agendaId.item(i).getFirstChild().getNodeValue()); } }
+                                    if(0 < cha.getLength()) { if(cha.item(i).hasChildNodes()) { agendaDetailXml.setCha(cha.item(i).getFirstChild().getNodeValue()); } }
+                                    if(0 < content.getLength()) { if(content.item(i).hasChildNodes()) { agendaDetailXml.setContent(content.item(i).getFirstChild().getNodeValue()); } }
+                                    if(0 < expectBillHwpLink.getLength()) { if(expectBillHwpLink.item(i).hasChildNodes()) { agendaDetailXml.setExpectBillHwpLink(expectBillHwpLink.item(i).getFirstChild().getNodeValue());} }
+                                    if(0 < meetingDay.getLength()) { if(meetingDay.item(i).hasChildNodes()) { agendaDetailXml.setMeetingDay(meetingDay.item(i).getFirstChild().getNodeValue()); } }
+                                    if(0 < meetingTime.getLength()) { if(meetingTime.item(i).hasChildNodes()) { agendaDetailXml.setMeetingTime(meetingTime.item(i).getFirstChild().getNodeValue());} }
+                                    if(0 < resultReportPdfLink.getLength()) { if(resultReportPdfLink.item(i).hasChildNodes()) { agendaDetailXml.setResultReportPdfLink(resultReportPdfLink.item(i).getFirstChild().getNodeValue()); } }
+                                    if(0 < sessNm.getLength()) { if(sessNm.item(i).hasChildNodes()) { agendaDetailXml.setSessNm(sessNm.item(i).getFirstChild().getNodeValue()); } }
+                                    if(0 < title.getLength()) { if(title.item(i).hasChildNodes()) { agendaDetailXml.setTitle(title.item(i).getFirstChild().getNodeValue()); } }
+                                }
+                            } catch(Exception e) {
+                                Log.e("Error", "Agenda Detail Info API Call Error : " + e.toString());
+                            }
+                        } else {
+                            Log.e("Error", "Agenda Detail Info API Call Error : 게시물 ID가 없습니다.");
+                        }
+                    } else {
+                        Log.e("Error", "Agenda Detail Info API Call Error : 게시판 ID가 없습니다.");
+                    }
+                } else {
+                    Log.e("Error", "Agenda Detail Info API Call Error : 위원회 ID가 없습니다.");
+                }
+            } else {
+                Log.e("Error", "Agenda Detail Info API Call Error : API 호출에 필요한 호출 URL이 없습니다.");
+            }
+        } else {
+            Log.e("Error", "Agenda Detail Info API Call Error : API 호출에 필요한 서비스키가 없습니다.");
+        }
 
         return agendaDetailXml;
     }
