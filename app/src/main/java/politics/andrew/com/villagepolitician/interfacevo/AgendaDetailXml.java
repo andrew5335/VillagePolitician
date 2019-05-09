@@ -4,6 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+/**
+ * @File : AgendaDetailXml
+ * @Date : 2019-05-09 오후 3:43
+ * @Author : Andrew Kim
+ * @Version : 1.0.0
+ * @Description : 의사일정 상세 정보 value object
+**/
 public class AgendaDetailXml implements Serializable {
 
     private static final long serialVersionUID = 611588356393730480L;
@@ -14,8 +21,8 @@ public class AgendaDetailXml implements Serializable {
     @SerializedName("sessNm") String sessNm;    // 회기
     @SerializedName("cha") String cha;    // 차수
     @SerializedName("agendaId") String agendaId;    // 위원회
-    @SerializedName("meetingTi") String meetingTi;    // 회의시간
-    @SerializedName("meetingDa") String meetingDa;    // 회의일자
+    @SerializedName("meetingTi") String meetingTime;    // 회의시간
+    @SerializedName("meetingDa") String meetingDay;    // 회의일자
     @SerializedName("content") String content;    // 내용
     @SerializedName("expectBillH") String expectBillH;    // 예정보고서 hwp 파일 경로
     @SerializedName("resultRepo") String resultRepo;    // 결과보고서 pdf 파일 경로
@@ -26,8 +33,8 @@ public class AgendaDetailXml implements Serializable {
     public String getSessNm() { return sessNm; }
     public String getCha() { return cha; }
     public String getAgendaId() { return agendaId; }
-    public String getMeetingTi() { return meetingTi; }
-    public String getMeetingDa() { return meetingDa; }
+    public String getMeetingTime() { return meetingTime; }
+    public String getMeetingDay() { return meetingDay; }
     public String getContent() { return content; }
     public String getExpectBillH() { return expectBillH; }
     public String getResultRepo() { return resultRepo; }
@@ -38,8 +45,8 @@ public class AgendaDetailXml implements Serializable {
     public void setSessNm(String sessNm) { this.sessNm = sessNm; }
     public void setCha(String cha) { this.cha = cha; }
     public void setAgendaId(String agendaId) { this.agendaId = agendaId; }
-    public void setMeetingTi(String meetingTi) { this.meetingTi = meetingTi; }
-    public void setMeetingDa(String meetingDa) { this.meetingDa = meetingDa; }
+    public void setMeetingTime(String meetingTime) { this.meetingTime = meetingTime; }
+    public void setMeetingDay(String meetingDay) { this.meetingDay = meetingDay; }
     public void setContent(String content) { this.content = content; }
     public void setExpectBillH(String expectBillH) { this.expectBillH = expectBillH; }
     public void setResultRepo(String resultRepo) { this.resultRepo = resultRepo; }

@@ -8,10 +8,13 @@ import org.xml.sax.InputSource;
 
 import java.lang.reflect.Array;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,6 +40,8 @@ public class XmlApiService {
     private String listServiceUrl = "";    // 국회의원 리스트 정보 호출 서비스 주소값
     private String detailServiceUrl = "";    // 국회의원 상세정보 호출 서비스 주소값
     private String partyServiceUrl = "";    // 정당 정보 호출 서비스 주소값
+    private String agendaListServiceUrl = "";    // 의사일정 목록 정보 호출 서비스 주소값
+    private String agendaDetailServiceUrl = "";    // 의사일정 상세 정보 호출 서비스 주소값
 
     //rivate Retrofit client = new Retrofit.Builder().baseUrl(publicDataUrl).addConverterFactory(SimpleXmlConverterFactory.create()).build();
 
@@ -47,6 +52,7 @@ public class XmlApiService {
     private AgendaDetailXml agendaDetailXml;    // 의사일정 상세정보 객체
     private Party party;    // 정당 정보 객체
     private ArrayList<Party> partyList;    // 정당 정보 리스트
+    private ArrayList<AgendaScheListXml> agendaScheList;
 
     private Document doc = null;
 
@@ -278,13 +284,92 @@ public class XmlApiService {
      * @Date : 2019-05-08 오후 3:37
      * @Author : Andrew Kim
      * @Description : 의사일정 목록 조회 / apiGu - 호출할 API 구분자, apiGu에 따라 serviceUrl, startDt/endDt 필수유무가 달라짐
-     *                  날짜별 의사일정 목록 조회 시는 startDt/endDt 필수
-     *                  회의별 의사일정 목록 조회 시는 startDt, endDt 필요없음
+     *                  날짜별 의사일정 목록 조회 시는 gubun/startDt/endDt 필수
+     *                  회의별 의사일정 목록 조회 시는 gubun 필수, startDt, endDt 필요없음
     **/
-    public AgendaScheListXml getAgendaScheList(String serviceKey, int numOfRows, int pageNo, String serviceUrl, String gubun, String startDt, String endDt, String apiGu) {
-        agendaScheListXml = new AgendaScheListXml();
+    public ArrayList<AgendaScheListXml> getAgendaScheList(String serviceKey, int numOfRows, int pageNo, String serviceUrl, String gubun, String startDt, String endDt, String apiGu) {
+        agendaScheList = new ArrayList<AgendaScheListXml>();
 
-        return agendaScheListXml;
+        if(null != serviceKey && !"".equals(serviceKey)) {
+            if(null != serviceUrl && !"".equals(serviceUrl)) {
+                try {
+                    // 구분값이 없을 경우에는 무조건 위원회 기준
+                    if(null == gubun && "".equals(gubun)) {
+                        gubun = "02";
+                    }
+
+                    // 시작, 종료일이 없을 경우에는 오늘 일자 기준 최근 7일로 세팅
+                    if((null == startDt && "".equals(startDt)) || (null == endDt && "".equals(endDt))) {
+                        // 시작일 또는 종료일 중 하나라도 없을 경우에는 무조건 오늘 기준 최근 7일로 검색 진행
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                        Calendar cal = Calendar.getInstance();
+                        endDt = sdf.format(cal.getTime());
+
+                        cal.add(Calendar.DATE, -7);
+                        startDt = sdf.format(cal.getTime());
+                    }
+
+                    if(null != apiGu && !"".equals(apiGu)) {
+                        if("date".equals(apiGu)) {
+                            // 날짜 기준 검색, 만약 날짜값이 없을 경우 최근 일주일 기준으로 검색 진행
+                            agendaListServiceUrl = agendaDataHost + serviceUrl + "?serviceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&gubun=" + gubun + "&start_dt=" + startDt + "&end_dt=" + endDt;
+                        } else {
+                            // 구분자 기준 검색
+                            agendaListServiceUrl = agendaDataHost + serviceUrl + "?serviceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&gubun=" + gubun;
+                        }
+                    } else {
+                        // apiGu값이 없을 경우 날짜 기준 검색
+                        agendaListServiceUrl = agendaDataHost + serviceUrl + "?serviceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&gubun=" + gubun + "&start_dt=" + startDt + "&end_dt=" + endDt;
+                    }
+
+                    URL url = new URL(agendaListServiceUrl);
+
+                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder builder = factory.newDocumentBuilder();
+
+                    doc = builder.parse(new InputSource(url.openStream()));
+                    doc.getDocumentElement().normalize();
+
+                    NodeList nodeItem = doc.getElementsByTagName("item");
+                    NodeList boardId = doc.getElementsByTagName("boardId");
+                    NodeList cha = doc.getElementsByTagName("cha");
+                    NodeList committeeId = doc.getElementsByTagName("committeeId");
+                    NodeList committeeName = doc.getElementsByTagName("committeeName");
+                    NodeList meetingTime = doc.getElementsByTagName("meetingTime");
+                    NodeList meetingday = doc.getElementsByTagName("meetingday");
+                    NodeList recordId = doc.getElementsByTagName("recordId");
+                    NodeList saveFileUrl = doc.getElementsByTagName("saveFileUrl");
+                    NodeList sessNm = doc.getElementsByTagName("sessNm");
+                    NodeList title = doc.getElementsByTagName("title");
+
+                    for(int i=0; i < nodeItem.getLength(); i++) {
+                        agendaScheListXml = new AgendaScheListXml();
+
+                        if(0 < boardId.getLength()) { if(boardId.item(i).hasChildNodes()) { agendaScheListXml.setBoardId(boardId.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < cha.getLength()) { if(cha.item(i).hasChildNodes()) { agendaScheListXml.setCha(cha.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < committeeId.getLength()) { if(committeeId.item(i).hasChildNodes()) { agendaScheListXml.setCommitteeId(Integer.parseInt(committeeId.item(i).getFirstChild().getNodeValue())); } }
+                        if(0 < committeeName.getLength()) { if(committeeName.item(i).hasChildNodes()) { agendaScheListXml.setCommitteeName(committeeName.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < meetingTime.getLength()) { if(meetingTime.item(i).hasChildNodes()) { agendaScheListXml.setMeetingTime(meetingTime.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < meetingday.getLength()) { if(meetingday.item(i).hasChildNodes()) { agendaScheListXml.setMeetingDay(meetingday.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < recordId.getLength()) { if(recordId.item(i).hasChildNodes()) { agendaScheListXml.setRecordId(Integer.parseInt(recordId.item(i).getFirstChild().getNodeValue())); } }
+                        if(0 < saveFileUrl.getLength()) { if(saveFileUrl.item(i).hasChildNodes()) { agendaScheListXml.setSaveFileUrl(saveFileUrl.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < sessNm.getLength()) { if(sessNm.item(i).hasChildNodes()) { agendaScheListXml.setSessNm(sessNm.item(i).getFirstChild().getNodeValue()); } }
+                        if(0 < title.getLength()) { if(title.item(i).hasChildNodes()) { agendaScheListXml.setTitle(title.item(i).getFirstChild().getNodeValue()); } }
+
+                        agendaScheList.add(agendaScheListXml);
+                    }
+
+                } catch(Exception e) {
+                    Log.e("Error", "Agenda Schedule List API Call Error : " + e.toString());
+                }
+            } else {
+                Log.e("Error", "Agenda Schedule List API Call Error : API 호출에 필요한 호출 URL이 없습니다.");
+            }
+        } else {
+            Log.e("Error", "Agenda Schedule List API Call Error : API 호출에 필요한 서비스키가 없습니다.");
+        }
+
+        return agendaScheList;
     }
 
     /**
