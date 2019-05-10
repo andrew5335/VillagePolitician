@@ -17,7 +17,7 @@ public class AgendaDetailXml implements Serializable {
 
     @SerializedName("gubun") String gubun;    // 구분
     @SerializedName("title") String title;    // 제목
-    @SerializedName("recordId") int recordId;    // 번호
+    @SerializedName("recordId") String recordId;    // 번호
     @SerializedName("sessNm") String sessNm;    // 회기
     @SerializedName("cha") String cha;    // 차수
     @SerializedName("agendaId") String agendaId;    // 위원회
@@ -29,7 +29,7 @@ public class AgendaDetailXml implements Serializable {
 
     public String getGubun() { return gubun; }
     public String getTitle() { return title; }
-    public int getRecordId() { return recordId; }
+    public String getRecordId() { return recordId; }
     public String getSessNm() { return sessNm; }
     public String getCha() { return cha; }
     public String getAgendaId() { return agendaId; }
@@ -41,7 +41,7 @@ public class AgendaDetailXml implements Serializable {
 
     public void setGubun(String gubun) { this.gubun = gubun; }
     public void setTitle(String title) { this.title = title; }
-    public void setRecordId(int recordId) { this.recordId = recordId; }
+    public void setRecordId(String recordId) { this.recordId = recordId; }
     public void setSessNm(String sessNm) { this.sessNm = sessNm; }
     public void setCha(String cha) { this.cha = cha; }
     public void setAgendaId(String agendaId) { this.agendaId = agendaId; }

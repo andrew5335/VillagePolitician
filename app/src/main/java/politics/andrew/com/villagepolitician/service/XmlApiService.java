@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -345,11 +346,11 @@ public class XmlApiService {
 
                         if(0 < boardId.getLength()) { if(boardId.item(i).hasChildNodes()) { agendaScheListXml.setBoardId(boardId.item(i).getFirstChild().getNodeValue()); } }
                         if(0 < cha.getLength()) { if(cha.item(i).hasChildNodes()) { agendaScheListXml.setCha(cha.item(i).getFirstChild().getNodeValue()); } }
-                        if(0 < committeeId.getLength()) { if(committeeId.item(i).hasChildNodes()) { agendaScheListXml.setCommitteeId(Integer.parseInt(committeeId.item(i).getFirstChild().getNodeValue())); } }
+                        if(0 < committeeId.getLength()) { if(committeeId.item(i).hasChildNodes()) { agendaScheListXml.setCommitteeId(committeeId.item(i).getFirstChild().getNodeValue()); } }
                         if(0 < committeeName.getLength()) { if(committeeName.item(i).hasChildNodes()) { agendaScheListXml.setCommitteeName(committeeName.item(i).getFirstChild().getNodeValue()); } }
                         if(0 < meetingTime.getLength()) { if(meetingTime.item(i).hasChildNodes()) { agendaScheListXml.setMeetingTime(meetingTime.item(i).getFirstChild().getNodeValue()); } }
                         if(0 < meetingday.getLength()) { if(meetingday.item(i).hasChildNodes()) { agendaScheListXml.setMeetingDay(meetingday.item(i).getFirstChild().getNodeValue()); } }
-                        if(0 < recordId.getLength()) { if(recordId.item(i).hasChildNodes()) { agendaScheListXml.setRecordId(Integer.parseInt(recordId.item(i).getFirstChild().getNodeValue())); } }
+                        if(0 < recordId.getLength()) { if(recordId.item(i).hasChildNodes()) { agendaScheListXml.setRecordId(recordId.item(i).getFirstChild().getNodeValue()); } }
                         if(0 < saveFileUrl.getLength()) { if(saveFileUrl.item(i).hasChildNodes()) { agendaScheListXml.setSaveFileUrl(saveFileUrl.item(i).getFirstChild().getNodeValue()); } }
                         if(0 < sessNm.getLength()) { if(sessNm.item(i).hasChildNodes()) { agendaScheListXml.setSessNm(sessNm.item(i).getFirstChild().getNodeValue()); } }
                         if(0 < title.getLength()) { if(title.item(i).hasChildNodes()) { agendaScheListXml.setTitle(title.item(i).getFirstChild().getNodeValue()); } }
@@ -376,14 +377,14 @@ public class XmlApiService {
      * @Author : Andrew Kim
      * @Description : 의사일정 상세 정보 조회
    **/
-    public AgendaDetailXml getAgendaDetailInfo(String serviceKey, int numOfRows, int pageNo, String serviceUrl, String gubun, int committeeId, int boardId, int recordId) {
+    public AgendaDetailXml getAgendaDetailInfo(String serviceKey, int numOfRows, int pageNo, String serviceUrl, String gubun, String committeeId, String boardId, String recordId) {
         agendaDetailXml = new AgendaDetailXml();
 
         if(null != serviceKey && !"".equals(serviceKey)) {
             if(null != serviceUrl && !"".equals(serviceUrl)) {
-                if(0 < committeeId) {
-                    if(0 < boardId) {
-                        if(0 < recordId) {
+                if(null != committeeId && !"".equals(committeeId)) {
+                    if(null != boardId && !"".equals(boardId)) {
+                        if(null != recordId && !"".equals(recordId)) {
                             try {
                                 agendaDetailServiceUrl = agendaDataHost + serviceUrl + "?serviceKey=" + serviceKey + "&numOfRows=" + numOfRows + "&pageNo=" + pageNo + "&gubun=" + gubun + "&agendaId=-" + "&committee_id=" + committeeId + "&board_id=" + boardId + "&record_id=" + recordId;
                                 URL url = new URL(agendaDetailServiceUrl);
@@ -415,6 +416,7 @@ public class XmlApiService {
                                     if(0 < resultReportPdfLink.getLength()) { if(resultReportPdfLink.item(i).hasChildNodes()) { agendaDetailXml.setResultReportPdfLink(resultReportPdfLink.item(i).getFirstChild().getNodeValue()); } }
                                     if(0 < sessNm.getLength()) { if(sessNm.item(i).hasChildNodes()) { agendaDetailXml.setSessNm(sessNm.item(i).getFirstChild().getNodeValue()); } }
                                     if(0 < title.getLength()) { if(title.item(i).hasChildNodes()) { agendaDetailXml.setTitle(title.item(i).getFirstChild().getNodeValue()); } }
+                                    agendaDetailXml.setRecordId(recordId);
                                 }
                             } catch(Exception e) {
                                 Log.e("Error", "Agenda Detail Info API Call Error : " + e.toString());
@@ -436,5 +438,84 @@ public class XmlApiService {
         }
 
         return agendaDetailXml;
+    }
+
+    public static void main(String[] args) {
+        AgendaDetailXml agendaDetailXml = new AgendaDetailXml();
+        List<AgendaScheListXml> resultList = new ArrayList<AgendaScheListXml>();
+        //String serviceUrl = "http://apis.data.go.kr/9710000/AgendaScheduleInfoService/getDetailScheduleList?serviceKey=ZjtS%2F7q9SORXFBybZ%2FhYciDyQKRNeP3r0tc8r%2BQLOv97shkq%2FNDa6a7Fp4m9T2lhT5fSjOiB6XR4aD33p7ljvA%3D%3D&numOfRows=1&pageNo=1&gubun=02&agendaId=-&committee_id=2005110000010&board_id=2006011000357&record_id=2006080002506";
+        //String serviceUrl = "http://apis.data.go.kr/9710000/AgendaScheduleInfoService/getGiganScheduleList?serviceKey=ZjtS%2F7q9SORXFBybZ%2FhYciDyQKRNeP3r0tc8r%2BQLOv97shkq%2FNDa6a7Fp4m9T2lhT5fSjOiB6XR4aD33p7ljvA%3D%3D&numOfRows=10&pageNo=1&gubun=02&start_dt=2019-05-01&end_dt=2019-05-09";
+        String serviceUrl = "http://apis.data.go.kr/9710000/AgendaScheduleInfoService/getGubunScheduleList?serviceKey=ZjtS%2F7q9SORXFBybZ%2FhYciDyQKRNeP3r0tc8r%2BQLOv97shkq%2FNDa6a7Fp4m9T2lhT5fSjOiB6XR4aD33p7ljvA%3D%3D&numOfRows=10&pageNo=1&gubun=02";
+
+        try {
+            URL url = new URL(serviceUrl);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            Document doc = builder.parse(new InputSource(url.openStream()));
+            doc.getDocumentElement().normalize();
+
+            /**
+            NodeList nodeItem = doc.getElementsByTagName("item");
+            NodeList agendaId = doc.getElementsByTagName("agendaId");
+            NodeList cha = doc.getElementsByTagName("cha");
+            NodeList content = doc.getElementsByTagName("content");
+            NodeList expectBillHwpLink = doc.getElementsByTagName("expectBillHwpLink");
+            NodeList meetingDay = doc.getElementsByTagName("meetingDay");
+            NodeList meetingTime = doc.getElementsByTagName("meetingTime");
+            NodeList resultReportPdfLink = doc.getElementsByTagName("resultReportPdfLink");
+            NodeList sessNm = doc.getElementsByTagName("sessNm");
+            NodeList title = doc.getElementsByTagName("title");
+
+            for(int i=0; i < nodeItem.getLength(); i++) {
+                if(0 < agendaId.getLength()) { if(agendaId.item(i).hasChildNodes()) { agendaDetailXml.setAgendaId(agendaId.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < cha.getLength()) { if(cha.item(i).hasChildNodes()) { agendaDetailXml.setCha(cha.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < content.getLength()) { if(content.item(i).hasChildNodes()) { agendaDetailXml.setContent(content.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < expectBillHwpLink.getLength()) { if(expectBillHwpLink.item(i).hasChildNodes()) { agendaDetailXml.setExpectBillHwpLink(expectBillHwpLink.item(i).getFirstChild().getNodeValue());} }
+                if(0 < meetingDay.getLength()) { if(meetingDay.item(i).hasChildNodes()) { agendaDetailXml.setMeetingDay(meetingDay.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < meetingTime.getLength()) { if(meetingTime.item(i).hasChildNodes()) { agendaDetailXml.setMeetingTime(meetingTime.item(i).getFirstChild().getNodeValue());} }
+                if(0 < resultReportPdfLink.getLength()) { if(resultReportPdfLink.item(i).hasChildNodes()) { agendaDetailXml.setResultReportPdfLink(resultReportPdfLink.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < sessNm.getLength()) { if(sessNm.item(i).hasChildNodes()) { agendaDetailXml.setSessNm(sessNm.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < title.getLength()) { if(title.item(i).hasChildNodes()) { agendaDetailXml.setTitle(title.item(i).getFirstChild().getNodeValue()); } }
+            }
+             **/
+
+            NodeList nodeItem = doc.getElementsByTagName("item");
+            NodeList boardId = doc.getElementsByTagName("boardId");
+            NodeList cha = doc.getElementsByTagName("cha");
+            NodeList committeeId = doc.getElementsByTagName("committeeId");
+            NodeList committeeName = doc.getElementsByTagName("committeeName");
+            NodeList meetingTime = doc.getElementsByTagName("meetingTime");
+            NodeList meetingday = doc.getElementsByTagName("meetingday");
+            NodeList recordId = doc.getElementsByTagName("recordId");
+            NodeList saveFileUrl = doc.getElementsByTagName("saveFileUrl");
+            NodeList sessNm = doc.getElementsByTagName("sessNm");
+            NodeList title = doc.getElementsByTagName("title");
+
+            for(int i=0; i < nodeItem.getLength(); i++) {
+                AgendaScheListXml agendaScheListXml = new AgendaScheListXml();
+
+                if(0 < boardId.getLength()) { if(boardId.item(i).hasChildNodes()) { agendaScheListXml.setBoardId(boardId.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < cha.getLength()) { if(cha.item(i).hasChildNodes()) { agendaScheListXml.setCha(cha.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < committeeId.getLength()) { if(committeeId.item(i).hasChildNodes()) { agendaScheListXml.setCommitteeId(committeeId.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < committeeName.getLength()) { if(committeeName.item(i).hasChildNodes()) { agendaScheListXml.setCommitteeName(committeeName.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < meetingTime.getLength()) { if(meetingTime.item(i).hasChildNodes()) { agendaScheListXml.setMeetingTime(meetingTime.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < meetingday.getLength()) { if(meetingday.item(i).hasChildNodes()) { agendaScheListXml.setMeetingDay(meetingday.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < recordId.getLength()) { if(recordId.item(i).hasChildNodes()) { agendaScheListXml.setRecordId(recordId.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < saveFileUrl.getLength()) { if(saveFileUrl.item(i).hasChildNodes()) { agendaScheListXml.setSaveFileUrl(saveFileUrl.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < sessNm.getLength()) { if(sessNm.item(i).hasChildNodes()) { agendaScheListXml.setSessNm(sessNm.item(i).getFirstChild().getNodeValue()); } }
+                if(0 < title.getLength()) { if(title.item(i).hasChildNodes()) { agendaScheListXml.setTitle(title.item(i).getFirstChild().getNodeValue()); } }
+
+                resultList.add(agendaScheListXml);
+            }
+        } catch(Exception e) {
+            System.out.println(e.toString());
+        }
+
+        for(int i=0; i < resultList.size(); i++) {
+            System.out.println(resultList.get(i).getCommitteeName());
+            System.out.println(resultList.get(i).getTitle());
+            System.out.println(resultList.get(i).getSaveFileUrl());
+        }
     }
 }
