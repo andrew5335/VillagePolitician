@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -91,6 +92,8 @@ class CongressmanDetailActivity : BaseActivity() {
             progressBar!!.visibility = View.INVISIBLE     // 진행 상태 바 감추기
             // 데이터가 있을 경우 해당 데이터 화면 처리 진행
             if(null != congressmanDetailXml && !Strings.isEmptyOrWhitespace(congressmanDetailXml.empNm)) {
+                Log.i("info", "==========================xml_info : " + congressmanDetailXml.assemEmail + congressmanDetailXml.assemTel
+                    + congressmanDetailXml.bthDate)
                 var requestOption = RequestOptions()
                 requestOption.override(105, 200)
                 Glide.with(applicationContext).load(jpgLink).apply(requestOption).into(congressman_photo)    // 국회의원 사진 배치
@@ -98,6 +101,8 @@ class CongressmanDetailActivity : BaseActivity() {
                 congressman_kr_name.text = congressmanDetailXml.empNm
                 congressman_hj_name.text = congressmanDetailXml.hjNm
                 congressman_eng_name.text = congressmanDetailXml.engNm
+                congressman_tel_no.text = congressmanDetailXml.assemTel
+                congressman_email_addr.text = congressmanDetailXml.assemEmail
             }
         }
     }

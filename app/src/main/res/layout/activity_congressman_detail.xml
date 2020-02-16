@@ -82,6 +82,22 @@
                         android:text="Hong Gil Dong"
                         android:textColor="#000" />
 
+                    <TextView
+                        android:id="@+id/congressman_tel_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="02-1234-5678"
+                        android:textColor="#000" />
+
+                    <TextView
+                        android:id="@+id/congressman_email_addr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:text="abc@mail.com"
+                        android:textColor="#000" />
+
                     <Button
                         android:id="@+id/news_view_btn"
                         android:layout_width="100dp"
